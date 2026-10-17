@@ -6,13 +6,37 @@
 **Source:** [Blueprint PDF](High-Moat%20Startup%20Blueprints%202026%20%281%29.pdf), especially pages 2, 5, and 8.  
 **Companion documents:** [PRD](prd.md) · [Architecture](architecture.md).
 
-**Navigate:** [Milestones](#2-critical-path-and-milestone-dependencies) · [Weekly schedule](#3-work-packages-and-weekly-schedule) · [Feature traceability](#4-backlog-and-requirement-traceability) · [Verification](#6-verification-strategy) · [Capacity and cost](#8-capacity-and-cost-planning) · [Risks](#9-risks-dependencies-and-decision-triggers) · [R2 roadmap](#10-r2-roadmap-after-a-successful-pilot).
+**Navigate:** [At a glance](#plan-at-a-glance) · [Milestones](#2-critical-path-and-milestone-dependencies) · [Weekly schedule](#3-work-packages-and-weekly-schedule) · [Descope order](#31-capacity-reserve-and-descope-order) · [Feature traceability](#4-backlog-and-requirement-traceability) · [Verification](#6-verification-strategy) · [Capacity and cost](#8-capacity-and-cost-planning) · [Risks](#9-risks-dependencies-and-decision-triggers) · [R2 roadmap](#10-r2-roadmap-after-a-successful-pilot).
+
+## Plan at a glance
+
+Available capacity is 4 engineers × 5 days × 70% ≈ **14 engineer-days per week**. Each week's planned work is capped at about **12 engineer-days**, leaving roughly 2 engineer-days as schedule reserve. The cap is a budget, not a bottom-up estimate: each owner sizes their week's tasks against it during week 1, and the whole schedule is re-baselined at M0 using the week 1–2 spike results.
+
+| Week | Focus | Key output | Gate / decision | Allocation cap (eng-days) |
+|---|---|---|---|---|
+| 0 (pre-start) | Customer discovery and partner commitment | Interview evidence, candidate routes, signed pilot LOIs | **W0** partner commitment | Founder + product (not counted below) |
+| 1 | Contracts and repository foundation | Selected routes, invariants, local dev environment | Week 1 exit check | 12 |
+| 2 | Runtime, signature, durability spikes | Feasibility report, latency results | **M0** feasibility and scope | 12 |
+| 3 | Contract registry and drift detection | Typed IR, labeled detector evaluation | Week 3 exit check | 12 |
+| 4 | DSL, synthesis, independent oracle | Deterministic compiler, native/Wasm equivalence | **M1** deterministic core | 12 |
+| 5 | Durable jobs, replay isolation, release staging | Crash-resilient pipeline, scoped approvals | Week 5 exit check | 12 |
+| 6 | Full prototype, canary, rollback; first shadow install | End-to-end Stripe demo, partner 1 shadow clock started | **M2** complete prototype + commercial check | 12 |
+| 7 | Tenant isolation, identity, reference deployment | Isolation report, partners 2–3 shadow | Week 7 exit check | 12 |
+| 8 | Operator UI, delivery ops, live signature qualification | Operator workflow, connector health | Week 8 exit check | 12 |
+| 9 | Security, resilience, production eligibility | Fault matrix, restore drill, readiness record | **M3** production eligibility (earliest) | 12 |
+| 10 | Reviewed production repairs and retirement | Reviewed repair report, shim retirement | Week 10 exit check | 12 |
+| 11 | Performance, cost, onboarding, usage | Benchmark/cost report, fresh onboarding | Week 11 exit check | 12 |
+| 12 | Pilot evaluation | Evidence-linked R1 acceptance, partner decisions | **M4** pilot completion | 10 + review |
+
+If an owner's sized work for a week exceeds the cap, or the week overruns it in two consecutive weekly reviews, apply the [descope order](#31-capacity-reserve-and-descope-order) before moving any gate date.
 
 ## 1. Delivery strategy and assumptions
 
 Deliver the smallest complete reliability loop first: observe an approved JSON route, detect a structural mismatch, synthesize a constrained adapter, verify it independently, deploy it in staging, and demonstrate rollback. Then harden the same loop for reviewed customer pilots. Broad protocol coverage and automatic production repairs follow evidence from those pilots.
 
-The PDF suggests a six-week MVP and a 90-day validation cycle. Here, six weeks means a technical prototype, while weeks 7–12 produce a qualified pilot. Neither date overrides safety, correctness, or partner-access gates.
+The PDF suggests a six-week MVP and a 90-day validation cycle. Here, six weeks means a technical prototype, while weeks 7–12 produce a qualified pilot. Week 0 is a pre-start discovery period run by the founder/product lead; it can overlap hiring and onboarding and is not part of the 12-week engineering clock. Neither date overrides safety, correctness, or partner-access gates.
+
+The schedule deliberately puts one connector on the critical path: **Stripe signed webhooks plus generic JSON** carry the M2 reference scenario. The Shopify webhook pack and NetSuite read-only fixture pack remain R0 deliverables per the PRD, but they are built on the same core after the Stripe path works and are the first connector work cut if capacity runs short.
 
 ### 1.1 Staffing and capacity assumption
 
@@ -62,10 +86,11 @@ The console, notification integrations, and commercial reports can be built afte
 
 | Milestone | Target | Required evidence | Decision |
 |---|---|---|---|
-| **M0: feasibility and scope** | End of week 2 | Runtime benchmark, signature demo, selected contract subset, fixture access, deployment boundary | Continue with qualified paths or narrow scope |
+| **W0: partner commitment** | Before week 1 starts | ≥10 interviews across ≥3 prospects, candidate routes with named owners, ≥2 signed pilot LOIs (non-binding) that include shadow-install access and a contact for consumer invariants | Start the engineering clock, or keep recruiting partners while running only technical spikes |
+| **M0: feasibility and scope** | End of week 2 | Runtime benchmark, signature demo, selected contract subset, fixture access, deployment boundary; effort re-baseline against the weekly cap | Continue with qualified paths or narrow scope |
 | **M1: deterministic core** | End of week 4 | Labeled drift detector, finite DSL, safe/unsafe fixture behavior, native/Wasm equivalence | Proceed to deployment work only with a trusted oracle |
-| **M2: complete prototype** | End of week 6 | Signed fixture → drift → compile → replay → staging canary → rollback | Start customer pilot hardening; no automatic production patching |
-| **M3: production eligibility** | End of week 9 at earliest | Isolation/durability/security/fault gates and ≥14-day partner shadow evidence | Enable individually approved production routes |
+| **M2: complete prototype** | End of week 6 | Stripe signed fixture → drift → compile → replay → staging canary → rollback; partner 1 observe-only shadow running; ≥1 partner has seen the demo and confirmed in writing its intent to proceed to a paid pilot if M3/M4 gates pass | Start customer pilot hardening; no automatic production patching. If no partner confirms intent, review positioning before spending weeks 7–12 on hardening |
+| **M3: production eligibility** | End of week 9 at earliest; week 10 if reserve is consumed | Isolation/durability/security/fault gates and ≥14-day partner shadow evidence | Enable individually approved production routes |
 | **M4: pilot completion** | End of week 12, if gates pass | Reviewed live/drill repair, operational runbooks, restoration measurement, costs, customer decision | Continue, narrow, or stop based on evidence |
 | **M5: bounded automation** | R2, unscheduled | Repeated safe reviewed outcomes, broader corpus, independent review, explicit customer policy | Automate only qualified low-risk classes |
 
@@ -73,20 +98,48 @@ The console, notification integrations, and commercial reports can be built afte
 
 Tasks are ordered within each week. Different owners may work concurrently where the dependency table permits. Feature IDs refer to the PRD.
 
-### Week 1 — Product evidence, contracts, and repository foundation
+### 3.1 Capacity reserve and descope order
+
+Each week keeps about 2 engineer-days of reserve (see [Plan at a glance](#plan-at-a-glance)). When the reserve is exhausted, the technical lead cuts scope in this order at the weekly review, recording each cut in the decision log and the R0/R1 known-limits list:
+
+1. GitHub App source-integration flow (F17); export the DSL/evidence bundle as files instead.
+2. Experimental Proxy-Wasm lab comparison; keep the local ext_proc + Wasmtime path only.
+3. Console polish beyond the operator journey; keep CLI/API parity for every operator action.
+4. Notification integrations; keep in-product alert state and audit records.
+5. Shopify webhook pack beyond fixture-level tests.
+6. NetSuite read-only fixture pack.
+
+Items 5–6 are PRD R0 commitments, so cutting them requires a recorded PRD scope change agreed with the product lead. Never cut: signature verification, independent oracle, replay isolation, durable acceptance, tenant isolation, approval freshness, rollback/kill switch, or the 14-day shadow minimum. If those cannot fit, move the gate date instead.
+
+### Week 0 (pre-start) — Customer discovery and partner commitment
+
+**Owners:** Founder/technical lead and product/full-stack lead.  
+**Features:** Inputs to F02, F09, F22; no engineering deliverables.
+
+1. Interview at least ten integration engineers across at least three potential design partners. Collect incident timelines, repair time, provider/version, downstream effect, and a sanitized failing/passing example where allowed.
+2. Shortlist candidate event families and operations per partner, each with a named owner who can define correct output. Record cases that require business decisions as out of scope.
+3. Discuss payload locality, retention, signature trust boundary, deployment topology, and consumer contract ownership with each prospect so week 1 can confirm rather than discover them.
+4. Agree non-binding pilot letters of intent with at least two partners covering shadow-install access, an invariant-owner contact, data handling expectations, and the evidence that would justify a paid pilot.
+5. Request provider test accounts and NetSuite sandbox authorization early, since these have external lead times.
+
+**Deliverables:** Interview notes with sanitized examples; candidate route shortlist; signed LOIs; outstanding access requests with owners.
+
+**Exit check (W0):** At least two partners have signed LOIs, and at least one candidate Stripe route has a named invariant owner. Without this, run week 1–2 technical spikes only and keep recruiting; do not start pilot-specific work.
+
+### Week 1 — Contracts, route selection, and repository foundation
 
 **Owners:** Product/full-stack lead, compiler lead, runtime lead.  
 **Features:** F01–F04, F09, F20, F22.
 
-1. Interview at least ten integration engineers across at least three potential design partners. Collect incident timelines, repair time, provider/version, downstream effect, and a sanitized failing/passing example where allowed.
-2. Select exact event families and operations. Prefer noncritical data fields with an owner who can define a correct output. Record rejected cases that require business decisions.
-3. Agree payload locality, retention, signature trust boundary, deployment topology, and consumer contract ownership with each partner. Document storage requirements before enabling durable webhook mode.
+1. Confirm exact event families and operations from the week 0 shortlist. Prefer noncritical data fields with an owner who can define a correct output. Stripe routes go first; Shopify and NetSuite routes are selected but scheduled after the Stripe path.
+2. Record agreed payload locality, retention, signature trust boundary, deployment topology, and consumer contract ownership with each partner. Document storage requirements before enabling durable webhook mode.
+3. Each owner sizes their weeks 1–6 tasks against the weekly allocation cap and flags any overrun to the technical lead.
 4. Define a synthetic mutation taxonomy and initial oracle independently of any synthesizer. Include rename/move, deletion, nullable/missing, incompatible types, enum change, unit change, auth, rate limiting, and pagination.
 5. Create monorepo structure, build commands, lockfiles, linting, formatting, dependency scanning, CI smoke path, and Linux development images.
 6. Define schemas for route, contract, observation, adapter DSL, verification manifest, release manifest, and internal event envelope. Reserve stable IDs and version fields.
 7. Stand up local PostgreSQL, NATS, filesystem object storage, provider simulators, Envoy, and basic health/metrics endpoints.
 
-**Deliverables:** Selected-route list; explicit consumer invariants; fixture provenance manifest; architecture decision record updates; runnable local development environment; version compatibility record.
+**Deliverables:** Selected-route list; explicit consumer invariants; fixture provenance manifest; architecture decision record updates; runnable local development environment; version compatibility record; sized task list per owner.
 
 **Exit check:** Another developer can launch the simulator and collect a redacted request without external accounts. There is at least one repairable and one intentionally unsupported case for each chosen connector family. No observed sample is promoted to an authoritative contract automatically.
 
@@ -98,8 +151,8 @@ Tasks are ordered within each week. Different owners may work concurrently where
 1. Implement one identity/no-op and one guarded field-move transform in the shared Rust core. Run them through the proposed core Wasm ABI in Wasmtime.
 2. Build a local ext_proc integration. Test full bounded bodies, HTTP/2 concurrent streams, empty responses, chunking, timeouts, malformed JSON, and body/header consistency.
 3. Measure pass-through versus transform latency on the declared 4-vCPU/8-GiB Linux profile. Record architecture, toolchain, payload distribution, warm/cold behavior, concurrency, CPU, memory, and p50/p95/p99.
-4. Attempt the same logical adapter through Proxy-Wasm in an isolated Envoy lab profile; record differences, restrictions, and artifact identities. Do not make it the default based on a single successful request.
-5. Verify original Stripe/Shopify signatures with provider tooling/test fixtures, mutate the body to demonstrate signature failure, and demonstrate the new mesh trust contract after verification.
+4. If reserve allows, attempt the same logical adapter through Proxy-Wasm in an isolated Envoy lab profile; record differences, restrictions, and artifact identities. Do not make it the default based on a single successful request. This is descope item 2 and does not block M0.
+5. Verify original Stripe signatures with provider tooling/test fixtures, mutate the body to demonstrate signature failure, and demonstrate the new mesh trust contract after verification. Record any Shopify-specific raw-body/HMAC differences for the week 6 Shopify fixture pack.
 6. Prototype object-store-first plus ledger-commit durable acceptance. Inject crashes before storage, before DB commit, after DB commit, and before the provider receives success.
 7. Test local redaction/export boundaries with seeded secret strings. Distinguish incomplete bodies and unsupported content encodings.
 8. Confirm NetSuite sandbox availability and exact read-only operation. If unavailable, keep R0 fixture-based and record the live qualification dependency.
@@ -159,23 +212,26 @@ Tasks are ordered within each week. Different owners may work concurrently where
 
 **Exit check:** Crashes and redeliveries do not lose committed work or create conflicting candidate states. A stale or modified approval cannot release. A duplicate accepted webhook is not sent as a new logical event.
 
-### Week 6 — Full prototype, canary, and rollback
+### Week 6 — Full prototype, canary, rollback, and first shadow install
 
-**Owners:** Runtime lead and product/full-stack lead.  
+**Owners:** Runtime lead and product/full-stack lead; backend/integration lead for the shadow install.  
 **Features:** F02–F07, F09–F15, F18–F20, F22.
 
 1. Implement per-request/event artifact pinning and a staging canary with deterministic cohorts.
 2. Add rollout health gates, halt, rollback, quarantine, and local emergency commands.
-3. Exercise the full reference scenario for Stripe/Shopify signed fixtures and NetSuite read-only fixture responses. Label synthetic mutation examples clearly.
-4. Build minimal CLI/API report views for incidents, evidence, approvals, releases, and queues. Avoid spending the core milestone on a polished dashboard.
-5. Run the default verification execution count with distinct cases, holdout and negative-case reporting. Exercise a low-volume waiver without enabling automatic promotion.
-6. Measure latency at target load, boundary body size, capture pressure, and executor resource exhaustion. Publish limitations and failure-policy outcomes.
+3. Exercise the full reference scenario end to end with Stripe signed fixtures and generic JSON. Label synthetic mutation examples clearly.
+4. Run the Shopify signed-webhook fixtures and NetSuite read-only fixture responses through the same pipeline. These connector packs are descope items 5–6; a gap here is recorded in the known-limits list and does not block the Stripe-based M2 gate.
+5. Build minimal CLI/API report views for incidents, evidence, approvals, releases, and queues. Avoid spending the core milestone on a polished dashboard.
+6. Run the default verification execution count with distinct cases, holdout and negative-case reporting. Exercise a low-volume waiver without enabling automatic promotion.
+7. Measure latency at target load, boundary body size, capture pressure, and executor resource exhaustion. Publish limitations and failure-policy outcomes.
+8. Install an observe-only, single-tenant data plane at partner 1 within the deployment boundary agreed at M0: no payload export beyond the agreed manifest, no transforms on live traffic. This starts partner 1's 14-day shadow clock with roughly one week of slack before M3. If the partner is not ready, install no later than early week 7; any later install moves partner 1's production gate.
+9. Demo the prototype to each LOI partner and ask for written confirmation of intent to proceed to a paid pilot if M3/M4 gates pass.
 
-**Deliverables:** Reproducible end-to-end demo; recorded acceptance report; operator quickstart; R0 known-limits list.
+**Deliverables:** Reproducible end-to-end demo; recorded acceptance report; operator quickstart; R0 known-limits list; partner 1 shadow install record; partner demo feedback and intent confirmations.
 
-**M2 gate:** A signed synthetic event is accepted correctly, structural drift is diagnosed, the adapter passes independent checks, a scoped staging approval releases it, a deliberate regression halts rollout, and rollback or quarantine behaves as declared. No external writes occur during verification replay.
+**M2 gate:** A signed synthetic Stripe event is accepted correctly, structural drift is diagnosed, the adapter passes independent checks, a scoped staging approval releases it, a deliberate regression halts rollout, and rollback or quarantine behaves as declared. No external writes occur during verification replay. Commercially, at least one partner has confirmed intent to proceed; otherwise the founder reviews positioning and partner selection before committing weeks 7–12 to hardening.
 
-### Week 7 — Tenant isolation, identity, and first partner shadow deployment
+### Week 7 — Tenant isolation, identity, and partner shadow expansion
 
 **Owners:** Backend/integration and runtime leads; security reviewer.  
 **Features:** F01–F04, F11, F14, F19, F20, F25.
@@ -183,30 +239,28 @@ Tasks are ordered within each week. Different owners may work concurrently where
 1. Add production OIDC login, scoped service identities, environment RBAC, author/approver separation, and session/CSRF handling.
 2. Enforce tenant-aware foreign keys, RLS with non-owner roles, certificate-derived scope, object-store policy, and tenant-bound artifact/evidence access.
 3. Set up reference hosted control infrastructure and customer-hosted data plane with managed secrets, mTLS rotation, backups, and egress policies.
-4. Qualify signature verification, raw-byte handling, provider/account identities, durable admission watermarks, timestamp policy, and event dedupe with live test accounts.
-5. Begin the first partner's shadow/recommend period. Every partner needs at least 14 days from its own start date; a later installation moves that partner's production gate.
-6. Test telemetry retention and ensure accepted-event retention is independently configured. Review the data export manifest with the partner.
+4. Continue partner 1's shadow/recommend period and begin shadow periods for partners 2–3 where installs are ready. Every partner needs at least 14 days from its own start date; a later installation moves that partner's production gate.
+5. Test telemetry retention and ensure accepted-event retention is independently configured. Review the data export manifest with each partner.
 
-**Deliverables:** Tenant-isolation test report; reference deployment; first partner shadow evidence; production identity and data handling runbooks.
+**Deliverables:** Tenant-isolation test report; reference deployment; partner shadow evidence to date; production identity and data handling runbooks.
 
-**Exit check:** Cross-tenant API, job, object, artifact, and notification access attempts fail. Provider signature failures cannot reach the transform/delivery stage. Disconnected agents show stale status and cannot receive new releases.
+**Exit check:** Cross-tenant API, job, object, and artifact access attempts fail. Disconnected agents show stale status and cannot receive new releases.
 
 ### Week 8 — Operator UI, delivery operations, and integration health
 
 **Owners:** Product/full-stack and backend/integration leads.  
-**Features:** F06, F14–F16, F18, F20, F21.
+**Features:** F06, F14–F16, F18, F20.
 
-1. Build the operator console: inventory, incident detail, candidate diff, replay report, approval, deployment, queue/DLQ, and settings.
+1. Build the operator console: inventory, incident detail, candidate diff, replay report, approval, deployment, queue/DLQ, and settings. Console polish beyond this journey is descope item 3.
 2. Add keyboard navigation, clear environment labeling, masked payload views, accessible diff states, and visible unknown/stale/insufficient-evidence states.
-3. Implement bounded webhook retry, downstream acceptance tracking, manual redelivery review, dedupe tombstones, and oldest-event/expiry alerts.
-4. Add provider authentication health, configured token refresh with single-flight leases, rate-limit scheduling, and read-only retry policies.
-5. Add pagination loop/duplicate/no-progress diagnostics and multi-page test sequences. Do not ship pagination rewriting in R1.
-6. Implement usage events for protected, transformed, verified, and downstream-accepted outcomes; dedupe event-based charges and record retries separately.
-7. Configure notifications only to customer-selected destinations, with grouping, cooldown, and safe metadata.
+3. Qualify signature verification, raw-byte handling, provider/account identities, durable admission watermarks, timestamp policy, and event dedupe with live test accounts.
+4. Implement bounded webhook retry, downstream acceptance tracking, manual redelivery review, dedupe tombstones, and oldest-event/expiry alerts.
+5. Add provider authentication health, configured token refresh with single-flight leases, rate-limit scheduling, and read-only retry policies.
+6. Add pagination loop/duplicate/no-progress diagnostics and multi-page test sequences. Do not ship pagination rewriting in R1.
 
-**Deliverables:** Usable operator workflow; delivery runbook; connector health dashboard; first usage report; ongoing partner evidence.
+**Deliverables:** Usable operator workflow; live signature qualification record; delivery runbook; connector health dashboard; ongoing partner evidence.
 
-**Exit check:** An operator can resolve the reference incident using only product UI/API and documented commands. Unknown outcomes and capture loss are visible; no swallowed failure creates a false healthy state.
+**Exit check:** An operator can resolve the reference incident using only product UI/API and documented commands. Provider signature failures from live test accounts cannot reach the transform/delivery stage. Unknown outcomes and capture loss are visible; no swallowed failure creates a false healthy state.
 
 ### Week 9 — Security, resilience, and production eligibility
 
@@ -231,7 +285,7 @@ Tasks are ordered within each week. Different owners may work concurrently where
 
 1. Run individually approved canaries on eligible partner routes. Require minimum traffic and duration; sparse routes remain paused or use an explicitly reviewed narrower rollout.
 2. Exercise controlled recovery from a real incident or a partner-approved synthetic mutation drill. Label drills separately from naturally occurring incidents in metrics.
-3. Add GitHub App installation flow with selected-repository scope, safe PR content, idempotency, base/head tracking, webhook validation, and conflict behavior.
+3. Add GitHub App installation flow with selected-repository scope, safe PR content, idempotency, base/head tracking, webhook validation, and conflict behavior. This is descope item 1; if cut, export the same bundle as downloadable files.
 4. Export DSL, generated integration example, safe fixtures, evidence manifest, and rollout link into the PR. Do not copy raw production data into source control.
 5. Implement permanent-fix verification, consumer version/attestation, no-op canary, and shim retirement. Add active-adapter review reminders without automatic expiry removal.
 6. Populate tenant-local mutation patterns from reviewed cases and their failure labels.
@@ -240,19 +294,23 @@ Tasks are ordered within each week. Different owners may work concurrently where
 
 **Exit check:** Live events have traceable artifact identity. A merged PR does not retire a shim until deployed-consumer compatibility is shown. GitHub unavailability does not change live delivery behavior.
 
-### Week 11 — Performance, cost, onboarding, and support readiness
+### Week 11 — Performance, cost, usage, onboarding, and support readiness
 
-**Owners:** Runtime and product leads.  
+**Owners:** Runtime and product leads; backend/integration lead for usage and notifications.  
 **Features:** F02, F18–F21, F25.
 
 1. Repeat the qualified latency/load benchmark after hardening, because new authentication and telemetry code may affect results. Run soak and overload tests with measured memory stability.
-2. Calculate bytes/event, retained storage, executor CPU, verification cost, notification/API cost, and engineering support burden using actual pilot usage.
-3. Tune sample budgets, safe quotas, retention, worker concurrency, and database indexes without reducing correctness gates.
-4. Make onboarding reproducible for a fresh tenant/environment; verify identity revocation, connector removal, and tenant deletion.
-5. Complete installation/upgrade/rollback runbooks, known compatibility matrix, incident escalation, and support ownership.
-6. Agree a paid-pilot proposal using the validated value and cost model. Exact pricing remains a business decision grounded in these measurements.
+2. Implement usage events for protected, transformed, verified, and downstream-accepted outcomes; dedupe event-based charges and record retries separately. Backfill from week 10 delivery records where available.
+3. Configure notifications only to customer-selected destinations, with grouping, cooldown, and safe metadata. Notification integrations are descope item 4; in-product alert state remains required.
+4. Calculate bytes/event, retained storage, executor CPU, verification cost, notification/API cost, and engineering support burden using actual pilot usage.
+5. Tune sample budgets, safe quotas, retention, worker concurrency, and database indexes without reducing correctness gates.
+6. Make onboarding reproducible for a fresh tenant/environment; verify identity revocation, connector removal, and tenant deletion.
+7. Complete installation/upgrade/rollback runbooks, known compatibility matrix, incident escalation, and support ownership.
+8. Agree a paid-pilot proposal using the validated value and cost model. Exact pricing remains a business decision grounded in these measurements.
 
-**Deliverables:** Benchmark/cost report; deployment and operator documentation; tested fresh onboarding/deletion; paid-pilot proposal inputs.
+**Deliverables:** Benchmark/cost report; first usage report; deployment and operator documentation; tested fresh onboarding/deletion; paid-pilot proposal inputs.
+
+**Exit check:** Post-hardening latency and soak results meet the qualified targets or have documented, accepted limits. A duplicate delivery is counted once in usage. Cross-tenant notification access fails and alert content contains no payload secrets. A new engineer onboards a fresh tenant from the runbook alone, and tenant deletion leaves only permitted audit metadata. Each partner has received a paid-pilot proposal.
 
 ### Week 12 — Pilot evaluation and next-release decision
 
@@ -261,7 +319,7 @@ Tasks are ordered within each week. Different owners may work concurrently where
 
 1. Evaluate precision/recall on labeled cases, eligible repair coverage, restoration-time change, unsafe releases, unsupported cases, capture gaps, and operator effort.
 2. Confirm all R1 feature acceptance checks have evidence links and no hidden unfinished dependency.
-3. Review each partner's actual willingness to pay and whether the product reduces work beyond diagnosis alone.
+3. Review each partner's actual willingness to pay against its week 0 LOI and M2 intent confirmation, and whether the product reduces work beyond diagnosis alone.
 4. Reconcile incident reports, deployment records, and usage invoices/reports so “transformed” is never presented as proven business correctness.
 5. Conduct a release review and choose the next narrow expansion based on failure data and customer demand.
 
@@ -464,7 +522,7 @@ Track gross-margin inputs and support hours for each pilot. Usage limits may sto
 | Risk / dependency | Mitigation | Owner / trigger |
 |---|---|---|
 | Silent semantic corruption despite schema validity | Independent invariants, protected fields, held-out cases, human approval, unsupported outcome | Compiler lead; any violation blocks release |
-| Insufficient partner evidence | Synthetic benchmark plus clearly labeled real-data gap; no autonomous gate; recruit alternative partner | Product lead; week 2/4 review |
+| Insufficient partner evidence | Week 0 discovery and LOIs; synthetic benchmark plus clearly labeled real-data gap; no autonomous gate; recruit alternative partner | Product lead; W0 and week 2/4 review |
 | Envoy/Wasm/runtime incompatibility | Pin compatibility matrix; default local Wasmtime; separate Proxy-Wasm qualification | Runtime lead; M0 |
 | Performance misses | Profile parse/copy/serialization and local transport; narrow body/operation scope; remeasure | Runtime lead; M0/M2/M3 |
 | Signature-breaking integration design | Verify raw bytes before transform; require mesh consumer trust or post-verification integration | Integration lead; M0 |
@@ -476,8 +534,9 @@ Track gross-margin inputs and support hours for each pilot. Usage limits may sto
 | Payload privacy or residency conflict | Local data plane, minimum export, explicit operational-storage choice | Product + security; before install |
 | Build/artifact supply-chain compromise | Offline templates, dependency pinning, signed manifests, isolated jobs, provenance | Platform + compiler; M2/M3 |
 | Sparse canary traffic | Both time/count gates, explicit human decision, no timer-only promotion | SRE + route owner; every release |
-| Scope exceeds four-person capacity | Preserve end-to-end safety core, reduce connector count/UI breadth, extend dates | Technical lead; weekly review |
-| Weak willingness to pay | Measure repair labor/time saved and buyer budget; do not hide poor demand with more features | Founder/product; M4 |
+| Scope exceeds four-person capacity | Weekly allocation cap with reserve; apply the [descope order](#31-capacity-reserve-and-descope-order); preserve end-to-end safety core; extend dates rather than cut safety gates | Technical lead; weekly review and M0 re-baseline |
+| Three-language stack (Rust, Go, TypeScript) strains a four-person team | Keep Rust confined to compiler/executor crates behind a stable ABI; Go owns control plane and services; defer console TypeScript until week 8; require cross-review only at language boundaries | Technical lead; revisit at M0 if any owner is blocked on an unfamiliar language for more than two days |
+| Weak willingness to pay | Signed LOIs before week 1; written intent after the M2 demo; measure repair labor/time saved and buyer budget; do not hide poor demand with more features | Founder/product; W0, M2, M4 |
 
 Dependencies to obtain: provider test accounts, NetSuite sandbox authorization, customer-selected webhook destinations, OIDC test tenant, reference cloud account, customer local deployment access, GitHub App registration/installation where desired, and owner-authored semantic invariants. These are implementation prerequisites, not actions already performed by writing this plan.
 
@@ -511,4 +570,4 @@ An R1 pilot is ready only when:
 - Each partner has completed its shadow period and approved the exact production route scope.
 - Business outcomes distinguish real incidents, synthetic drills, transformed calls, downstream acceptance, and independently verified correctness.
 
-The next executable step is week 1: select the first exact routes and invariant fixtures, establish the repository/runtime baseline, and validate the critical runtime/signature design before expanding the product surface.
+The next executable step is week 0: run partner discovery, secure at least two pilot LOIs, and request provider/sandbox access. Week 1 then confirms the first exact routes and invariant fixtures, establishes the repository/runtime baseline, and begins validating the critical runtime/signature design before expanding the product surface.
