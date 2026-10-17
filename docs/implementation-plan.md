@@ -351,6 +351,19 @@ Keep pure transformation code independent of network/storage libraries. Share se
 - Use expand/contract database migrations; an older deployed agent must either remain supported or receive a clear upgrade-required state.
 - Maintain a compatibility table for Go/Rust toolchains, Envoy build/runtime, Wasmtime, Wasm ABI, and each connector pack. CI runs the supported combinations, not every possible version.
 
+### 5.2 Required Git branch, commit, merge, and push workflow
+
+Every change must follow this workflow before it is pushed to `main`:
+
+1. **Create a new branch first.** Start from the current `main` and create a descriptive feature, fix, or documentation branch, such as `feat/schema-drift-detector`. Make the changes and commits on that branch.
+2. **Keep commits logical.** Each commit should represent a coherent change with a clear message.
+3. **Group excessive commits before merging.** If the branch accumulates many small, WIP, fixup, or repetitive commits, squash them into one or a few logical commits. Preserve separate commits for meaningful independent changes. Clean up the branch history before merging; do not rewrite history already merged into `main`.
+4. **Validate the finished branch.** Incorporate any newer changes from `main`, resolve conflicts, and run the checks appropriate to the change. Rerun affected checks after conflict resolution or history cleanup when the resulting content changes.
+5. **Merge into `main`.** Merge the completed, validated branch using the repository's merge process.
+6. **Push the merged `main`.** Push `main` to the configured remote after the merge. If the remote has advanced, reconcile those changes and validate the result before retrying the push.
+
+Required order: **new branch → changes and commits → group/squash excessive commits → validate → merge into `main` → push `main`**.
+
 ## 6. Verification strategy
 
 ### 6.1 Test layers
