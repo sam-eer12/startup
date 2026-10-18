@@ -8,6 +8,7 @@ import (
 	"io"
 	"mime"
 	"net/http"
+	"strings"
 	"sync/atomic"
 	"time"
 
@@ -64,11 +65,61 @@ func New(store *storage.Filesystem, mode string) (http.Handler, error) {
 	mux.HandleFunc("GET /metrics", s.metrics)
 	if mode != "collector" {
 		mux.HandleFunc("GET /fixtures/{connector}/{scenario}", s.fixture)
+		mux.HandleFunc("GET /runtime/{operation}", s.runtimeFixture)
 	}
 	if mode != "simulator" {
 		mux.HandleFunc("POST /observe/{route}", s.observe)
 	}
 	return mux, nil
+}
+
+// runtimeFixture is an opt-in synthetic upstream for the Week 2 Envoy lab.
+func (s *Server) runtimeFixture(w http.ResponseWriter, r *http.Request) {
+	if r.PathValue("operation") != "identity" && r.PathValue("operation") != "move" && r.PathValue("operation") != "bypass" {
+		http.NotFound(w, r)
+		return
+	}
+	if r.URL.Query().Get("case") == "empty" {
+		w.WriteHeader(http.StatusNoContent)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("ETag", `"synthetic-original"`)
+	w.Header().Set("Content-Digest", "synthetic-original-digest")
+	if r.URL.Query().Get("case") == "malformed" {
+		w.Write([]byte("{"))
+		return
+	}
+	body, _ := fixtures.Files.ReadFile("synthetic/stripe/field-move.json")
+	if requested := r.URL.Query().Get("size"); requested != "" {
+		size := 0
+		switch requested {
+		case "32768":
+			size = 32768
+		case "262144":
+			size = 262144
+		default:
+			http.Error(w, "unsupported synthetic size", 400)
+			return
+		}
+		var value map[string]any
+		if err := json.Unmarshal(body, &value); err != nil {
+			http.Error(w, "fixture unavailable", 500)
+			return
+		}
+		value["synthetic_padding"] = ""
+		empty, _ := json.MarshalIndent(value, "", "  ")
+		value["synthetic_padding"] = strings.Repeat("x", size-len(empty))
+		body, _ = json.MarshalIndent(value, "", "  ")
+	}
+	if r.URL.Query().Get("case") == "chunked" {
+		midpoint := len(body) / 2
+		w.Write(body[:midpoint])
+		w.(http.Flusher).Flush()
+		w.Write(body[midpoint:])
+		return
+	}
+	w.Write(body)
 }
 
 func (s *Server) fixture(w http.ResponseWriter, r *http.Request) {

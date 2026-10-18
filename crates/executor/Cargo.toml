@@ -1,0 +1,18 @@
+[package]
+name = "executor"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+
+[dependencies]
+adapter-core = { path = "../adapter-core" }
+anyhow = "1.0"
+wasmtime = { version = "=49.0.3", default-features = false, features = ["anyhow", "cranelift", "runtime", "std", "wat"] }
+envoy-types = "=0.7.7"
+tonic = "0.14"
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "net", "sync", "time", "signal"] }
+tokio-stream = { version = "0.1", features = ["net"] }
+serde.workspace = true
+serde_json.workspace = true
+sha2 = "0.10"

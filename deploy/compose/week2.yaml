@@ -1,0 +1,39 @@
+# Opt-in synthetic spike. The database is exposed only on host loopback for the
+# native abrupt-process-crash test harness. No real provider endpoint is enabled.
+services:
+  postgres:
+    ports: ["127.0.0.1:15432:5432"]
+  executor:
+    build:
+      context: ../..
+      dockerfile: deploy/compose/Dockerfile.executor
+      args:
+        RUST_IMAGE: ${RUST_IMAGE:?use the image lock}
+    environment:
+      MESH_CONTAINER_LOCAL: synthetic-only
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    healthcheck:
+      test: [CMD, bash, -c, "</dev/tcp/127.0.0.1/50051"]
+      interval: 2s
+      timeout: 2s
+      retries: 30
+    networks: [local]
+  envoy:
+    volumes:
+      - ../envoy/week2.yaml:/etc/envoy/envoy.yaml:ro
+    depends_on:
+      executor:
+        condition: service_healthy
+  durability-tests:
+    profiles: [tools]
+    build:
+      context: ../..
+      dockerfile: deploy/compose/Dockerfile.go-tests
+      args:
+        GO_IMAGE: ${GO_IMAGE:?use the image lock}
+    environment:
+      MESH_TEST_DATABASE_URL: postgres://mesh_local:synthetic-local-only@postgres:5432/mesh_local?sslmode=disable
+      GOPROXY: "off"
+    networks: [local]

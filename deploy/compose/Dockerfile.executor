@@ -1,0 +1,11 @@
+ARG RUST_IMAGE
+FROM ${RUST_IMAGE}
+WORKDIR /src
+COPY Cargo.toml Cargo.lock rust-toolchain.toml ./
+COPY crates ./crates
+COPY fixtures ./fixtures
+RUN rustup target add wasm32-unknown-unknown && \
+    cargo build --locked --release -p adapter-wasm --target wasm32-unknown-unknown -j 2 && \
+    cargo build --locked --release -p executor -j 2
+USER 65532:65532
+ENTRYPOINT ["/src/target/release/executor", "/src/target/wasm32-unknown-unknown/release/adapter_wasm.wasm", "0.0.0.0:50051"]

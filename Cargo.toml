@@ -1,5 +1,5 @@
 [workspace]
-members = ["crates/contract-ir", "crates/adapter-dsl", "crates/verifier"]
+members = ["crates/contract-ir", "crates/adapter-dsl", "crates/verifier", "crates/adapter-core", "crates/adapter-wasm", "crates/executor"]
 resolver = "3"
 
 [workspace.package]
@@ -10,4 +10,4 @@ publish = false
 
 [workspace.dependencies]
 serde = { version = "1.0.228", features = ["derive"] }
-serde_json = { version = "1.0.145", features = ["arbitrary_precision"] }
+serde_json = { version = "1.0.145", features = ["arbitrary_precision", "raw_value"] }

@@ -1,7 +1,9 @@
 GO ?= go
 CARGO ?= cargo
 PYTHON ?= .venv/bin/python
-COMPOSE = docker compose --env-file deploy/compose/images.env -f deploy/compose/compose.yaml
+COMPOSE_PROVIDER ?= podman compose
+COMPOSE = $(COMPOSE_PROVIDER) --env-file deploy/compose/images.env -f deploy/compose/compose.yaml
+WEEK2_COMPOSE = $(COMPOSE) -f deploy/compose/week2.yaml
 
 .PHONY: help bootstrap build dev test lint fmt check schemas oracle smoke up down compose-check scan
 help:
@@ -41,9 +43,23 @@ schemas:
 	$(PYTHON) scripts/seed_fixtures.py --check
 	$(PYTHON) scripts/validate_schemas.py
 
-test:
+test: wasm
 	$(GO) test -race ./...
 	$(CARGO) test --workspace --locked
+
+.PHONY: wasm week2-up week2-down week2-check
+wasm:
+	$(CARGO) build --release --locked -p adapter-wasm --target wasm32-unknown-unknown
+
+week2-up:
+	$(WEEK2_COMPOSE) up -d --build --wait --wait-timeout 180
+
+week2-down:
+	$(WEEK2_COMPOSE) down
+
+week2-check:
+	$(WEEK2_COMPOSE) run --rm --build durability-tests
+	$(WEEK2_COMPOSE) run --rm --no-deps durability-tests python3 scripts/week2_smoke.py --url http://envoy:8080
 
 oracle:
 	$(CARGO) run --locked -p verifier
