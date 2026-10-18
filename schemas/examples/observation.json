@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "tenant_id": "tenant_local",
+  "environment_id": "env_local",
+  "observation_id": "obs_example",
+  "route_id": "route_generic-json",
+  "provider_version": "fixture-v1",
+  "event_family": "shipment.updated",
+  "direction": "webhook",
+  "observed_at": "2026-10-18T00:00:00Z",
+  "expires_at": "2026-10-19T00:00:00Z",
+  "capture_quality": "complete",
+  "sample_probability": 1,
+  "authoritative": false,
+  "signature_status": "unverified_fixture",
+  "redaction_policy": "all-scalars-and-keys-v1",
+  "semantic_verification": "unavailable_after_redaction",
+  "redacted_object_ref": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+}

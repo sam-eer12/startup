@@ -1,0 +1,18 @@
+ARG GO_IMAGE
+FROM ${GO_IMAGE} AS build
+WORKDIR /src
+COPY go.mod ./
+COPY cmd ./cmd
+COPY internal ./internal
+COPY connectors ./connectors
+COPY fixtures ./fixtures
+RUN CGO_ENABLED=0 go build -trimpath -o /out/devserver ./cmd/devserver && \
+    CGO_ENABLED=0 go build -trimpath -o /out/meshctl ./cmd/meshctl && \
+    mkdir -p /data/objects
+
+FROM scratch
+COPY --from=build /out/devserver /devserver
+COPY --from=build /out/meshctl /meshctl
+COPY --from=build --chown=65532:65532 /data /data
+USER 65532:65532
+ENTRYPOINT ["/devserver"]

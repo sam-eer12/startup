@@ -1,0 +1,15 @@
+{
+  "api_version": "fixture-v1",
+  "data": {
+    "object": {
+      "email": "synthetic@example.invalid",
+      "id": "cus_synthetic_001",
+      "metadata": {
+        "display_label": "Local demo"
+      },
+      "object": "customer"
+    }
+  },
+  "id": "evt_synthetic_001",
+  "type": "customer.updated"
+}

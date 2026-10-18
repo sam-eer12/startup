@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "tenant_id": "tenant_local",
+  "environment_id": "env_local",
+  "release_id": "release_example",
+  "route_id": "route_generic-json",
+  "generation": 1,
+  "artifact_sha256": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "source_contract_sha256": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "target_contract_sha256": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "verification_sha256": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "policy_sha256": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "abi_version": 1,
+  "executor_versions": [
+    "not-implemented-week-1"
+  ],
+  "approved_by": "example_nobody",
+  "approval_expires_at": "2026-10-19T00:00:00Z",
+  "canary": {
+    "percent": 1,
+    "minimum_requests": 100,
+    "minimum_seconds": 300
+  },
+  "previous_safe_release_id": null,
+  "rollback_authorization_ref": null,
+  "signer_key_id": "example_unsigned",
+  "signature_ref": "example:unsigned-do-not-deploy"
+}

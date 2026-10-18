@@ -1,1 +1,8 @@
 .DS_Store
+.local/
+.venv/
+bin/
+target/
+__pycache__/
+*.pyc
+.ruff_cache/

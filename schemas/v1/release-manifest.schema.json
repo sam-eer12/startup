@@ -1,0 +1,140 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.mesh.local/v1/release-manifest.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "tenant_id": {
+      "$ref": "common.schema.json#/$defs/id"
+    },
+    "environment_id": {
+      "$ref": "common.schema.json#/$defs/id"
+    },
+    "release_id": {
+      "$ref": "common.schema.json#/$defs/id"
+    },
+    "route_id": {
+      "$ref": "common.schema.json#/$defs/id"
+    },
+    "generation": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "artifact_sha256": {
+      "$ref": "common.schema.json#/$defs/digest"
+    },
+    "source_contract_sha256": {
+      "$ref": "common.schema.json#/$defs/digest"
+    },
+    "target_contract_sha256": {
+      "$ref": "common.schema.json#/$defs/digest"
+    },
+    "verification_sha256": {
+      "$ref": "common.schema.json#/$defs/digest"
+    },
+    "policy_sha256": {
+      "$ref": "common.schema.json#/$defs/digest"
+    },
+    "abi_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "executor_versions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 512
+      },
+      "minItems": 1,
+      "maxItems": 1000
+    },
+    "approved_by": {
+      "$ref": "common.schema.json#/$defs/id"
+    },
+    "approval_expires_at": {
+      "$ref": "common.schema.json#/$defs/timestamp"
+    },
+    "canary": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "percent": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "minimum_requests": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "minimum_seconds": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "percent",
+        "minimum_requests",
+        "minimum_seconds"
+      ]
+    },
+    "previous_safe_release_id": {
+      "oneOf": [
+        {
+          "$ref": "common.schema.json#/$defs/id"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "rollback_authorization_ref": {
+      "oneOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "signer_key_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "signature_ref": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    }
+  },
+  "required": [
+    "schema_version",
+    "tenant_id",
+    "environment_id",
+    "release_id",
+    "route_id",
+    "generation",
+    "artifact_sha256",
+    "source_contract_sha256",
+    "target_contract_sha256",
+    "verification_sha256",
+    "policy_sha256",
+    "abi_version",
+    "executor_versions",
+    "approved_by",
+    "approval_expires_at",
+    "canary",
+    "previous_safe_release_id",
+    "rollback_authorization_ref",
+    "signer_key_id",
+    "signature_ref"
+  ]
+}

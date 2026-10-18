@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "tenant_id": "tenant_local",
+  "environment_id": "env_local",
+  "adapter_id": "adapter_example",
+  "route_id": "route_generic-json",
+  "direction": "webhook",
+  "source_contract_sha256": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "target_contract_sha256": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "semantic_evidence_ref": "synthetic:tracking-equivalence-v1",
+  "guard": {
+    "required_paths": [
+      "/shipment/tracking/number"
+    ],
+    "absent_paths": [
+      "/shipment/tracking_number"
+    ]
+  },
+  "operations": [
+    {
+      "op": "move",
+      "from": "/shipment/tracking/number",
+      "path": "/shipment/tracking_number",
+      "source_type": "string",
+      "target_type": "string",
+      "on_missing": "reject",
+      "on_conflict": "reject"
+    }
+  ],
+  "assertions": [
+    {
+      "kind": "value_equal",
+      "before": "/shipment/tracking/number",
+      "after": "/shipment/tracking_number"
+    },
+    {
+      "kind": "unchanged_outside",
+      "paths": [
+        "/shipment/tracking/number",
+        "/shipment/tracking_number"
+      ]
+    },
+    {
+      "kind": "absent",
+      "path": "/shipment/tracking/number"
+    }
+  ],
+  "unmatched_input": "validate_target_or_reject"
+}

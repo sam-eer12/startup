@@ -1,0 +1,62 @@
+{
+  "authority": "synthetic_fixture",
+  "contract_id": "contract_stripe",
+  "contract_version": 1,
+  "dialect": "https://json-schema.org/draft/2020-12/schema",
+  "environment_id": "env_local",
+  "owner": "synthetic-fixture-author",
+  "schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": true,
+    "properties": {
+      "data": {
+        "additionalProperties": true,
+        "properties": {
+          "object": {
+            "additionalProperties": true,
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "metadata": {
+                "additionalProperties": true,
+                "properties": {
+                  "display_label": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "display_label"
+                ],
+                "type": "object"
+              }
+            },
+            "required": [
+              "id",
+              "metadata"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "object"
+        ],
+        "type": "object"
+      },
+      "id": {
+        "type": "string"
+      },
+      "type": {
+        "const": "customer.updated"
+      }
+    },
+    "required": [
+      "id",
+      "type",
+      "data"
+    ],
+    "type": "object"
+  },
+  "schema_version": 1,
+  "tenant_id": "tenant_local"
+}

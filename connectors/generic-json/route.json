@@ -1,0 +1,22 @@
+{
+  "connector": "generic-json",
+  "contract_id": "contract_generic-json",
+  "contract_version": 1,
+  "direction": "webhook",
+  "environment_id": "env_local",
+  "event_family": "shipment.updated",
+  "mode": "observe",
+  "owner": "synthetic-fixture-author",
+  "payload_policy": {
+    "durable_acceptance": false,
+    "locality": "local_only",
+    "redaction_policy": "all-scalars-and-keys-v1",
+    "signature_trust": "unverified_fixture",
+    "telemetry_retention_hours": 24
+  },
+  "provider_version": "fixture-v1",
+  "route_id": "route_generic-json",
+  "schema_version": 1,
+  "scope": "synthetic_local",
+  "tenant_id": "tenant_local"
+}

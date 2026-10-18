@@ -1,0 +1,151 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.mesh.local/v1/route.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "tenant_id": {
+      "$ref": "common.schema.json#/$defs/id"
+    },
+    "environment_id": {
+      "$ref": "common.schema.json#/$defs/id"
+    },
+    "route_id": {
+      "$ref": "common.schema.json#/$defs/id"
+    },
+    "connector": {
+      "enum": [
+        "stripe",
+        "shopify",
+        "netsuite",
+        "generic-json"
+      ]
+    },
+    "provider_version": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "event_family": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "direction": {
+      "enum": [
+        "webhook",
+        "response"
+      ]
+    },
+    "mode": {
+      "enum": [
+        "observe",
+        "recommend",
+        "approved_repair"
+      ]
+    },
+    "scope": {
+      "enum": [
+        "synthetic_local",
+        "partner_pilot"
+      ]
+    },
+    "owner": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "contract_id": {
+      "$ref": "common.schema.json#/$defs/id"
+    },
+    "contract_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "payload_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "locality": {
+          "enum": [
+            "local_only"
+          ]
+        },
+        "telemetry_retention_hours": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 24
+        },
+        "durable_acceptance": {
+          "type": "boolean"
+        },
+        "signature_trust": {
+          "enum": [
+            "unverified_fixture",
+            "provider_raw_verified",
+            "mesh_envelope"
+          ]
+        },
+        "redaction_policy": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        }
+      },
+      "required": [
+        "locality",
+        "telemetry_retention_hours",
+        "durable_acceptance",
+        "signature_trust",
+        "redaction_policy"
+      ]
+    }
+  },
+  "required": [
+    "schema_version",
+    "tenant_id",
+    "environment_id",
+    "route_id",
+    "connector",
+    "provider_version",
+    "event_family",
+    "direction",
+    "mode",
+    "scope",
+    "owner",
+    "contract_id",
+    "contract_version",
+    "payload_policy"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "scope": {
+            "const": "synthetic_local"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "mode": {
+            "const": "observe"
+          },
+          "payload_policy": {
+            "properties": {
+              "durable_acceptance": {
+                "const": false
+              },
+              "signature_trust": {
+                "const": "unverified_fixture"
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

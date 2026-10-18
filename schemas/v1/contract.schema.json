@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.mesh.local/v1/contract.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "tenant_id": {
+      "$ref": "common.schema.json#/$defs/id"
+    },
+    "environment_id": {
+      "$ref": "common.schema.json#/$defs/id"
+    },
+    "contract_id": {
+      "$ref": "common.schema.json#/$defs/id"
+    },
+    "contract_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "authority": {
+      "enum": [
+        "synthetic_fixture",
+        "owner_approved"
+      ]
+    },
+    "owner": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "dialect": {
+      "const": "https://json-schema.org/draft/2020-12/schema"
+    },
+    "schema": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "schema_version",
+    "tenant_id",
+    "environment_id",
+    "contract_id",
+    "contract_version",
+    "authority",
+    "owner",
+    "dialect",
+    "schema"
+  ]
+}
