@@ -1,18 +1,22 @@
 # Self-Healing API Mesh
 
-Week 1 foundation for the [project plan](docs/implementation-plan.md): a Go local
-simulator/collector, Rust contract/DSL vocabulary and independent oracle, versioned
-JSON schemas, synthetic connector fixtures, and a Linux Compose environment.
+Week 1 foundation and Week 2 technical spikes for the [project plan](docs/implementation-plan.md):
+a Go simulator/collector, Rust/Wasm transforms behind Envoy ext_proc, independent
+oracle, signature fixtures, and an encrypted object-first/PostgreSQL acceptance lab.
 
-The current service collects **redacted, non-authoritative observations**. Provider
-signature verification, drift detection, compilation, durable webhook acceptance,
-and deployment are later milestones. See [Week 1 status](docs/week-1.md) for tested
-behavior, remaining checks, and partner dependencies.
+The collector still collects **redacted, non-authoritative observations**. Signature
+and durable-acceptance code is exercised by synthetic local tests, with no provider-facing
+acceptance endpoint. Drift detection, compilation and deployment remain later milestones.
+See [Week 2 status](docs/week-2.md) for evidence, limits and the open M0 gate.
 
 ## Run locally
 
 Install Go **1.27.2**, Rust **1.99.1** with rustfmt/clippy, and Python **3.14.8**.
 Rust's toolchain file selects the pinned version when using rustup.
+
+```sh
+rustup target add wasm32-unknown-unknown --toolchain 1.99.1
+```
 
 ```sh
 make bootstrap
@@ -41,7 +45,10 @@ Use only synthetic data in this development profile.
 
 ## Run the Linux stack
 
-Docker Engine/Desktop and Compose with `up --wait` support are required. Image references are locked by
+Podman and Docker Compose with `up --wait` support are supported; Make defaults to
+`podman compose`. Start the existing VM with `podman machine start` on macOS.
+For Docker Engine/Desktop, pass `COMPOSE_PROVIDER="docker compose"` to Make.
+Image references are locked by
 multi-platform index digest in [images.env](deploy/compose/images.env).
 
 ```sh
@@ -61,9 +68,40 @@ yet use them for a ledger or outbox. `make down` retains the local volumes.
 To run the independent oracle in a network-disabled Linux container:
 
 ```sh
-docker compose --env-file deploy/compose/images.env \
+podman compose --env-file deploy/compose/images.env \
   -f deploy/compose/compose.yaml run --rm --build oracle
 ```
+
+## Week 2 synthetic lab
+
+```sh
+make week2-up
+make week2-check
+go run ./cmd/signature-demo
+```
+
+The checks run inside the Linux network, including real PostgreSQL process-crash
+tests and Envoy response transformation/framing checks. They do not depend on
+macOS host port forwarding. `/runtime/identity` and `/runtime/move` are synthetic
+fixture routes; `/observe/...` retains its original unverified capture behavior.
+The signature demo writes disposable fixtures/public keys to `.local/week2-signatures`.
+Private signing keys are never written. These fixtures expire under the timestamp policy.
+
+To run the diagnostic gateway sweep and the network-disabled runtime microbenchmark:
+
+```sh
+podman compose --env-file deploy/compose/images.env -f deploy/compose/compose.yaml \
+  -f deploy/compose/week2.yaml run --rm --no-deps durability-tests \
+  python3 scripts/week2_bench.py --url http://envoy:8080
+podman run --rm --network none --entrypoint /src/target/release/runtime-bench \
+  mesh-local-executor /src/target/wasm32-unknown-unknown/release/adapter_wasm.wasm
+make week2-down
+```
+
+The [ABI/body/trust decision](docs/decisions/0002-runtime-trust-spike.md) defines the
+limits. Measurements on the current smaller Podman VM do not satisfy the planned
+4-vCPU/8-GiB qualification. No customer capture or production webhook registration
+is authorized by this lab.
 
 ## Development
 
@@ -75,8 +113,8 @@ docker compose --env-file deploy/compose/images.env \
 - `python3 scripts/lock_images.py`: explicitly refresh image digests; review and revalidate afterward.
 
 CI is configured to run these checks and the complete Compose smoke path on Linux. Python tools
-are pinned with hashes; Rust dependencies use `Cargo.lock`. The Go service currently
-has no external modules, so it needs no `go.sum`. CI actions are pinned by commit.
+are pinned with hashes; Rust dependencies use `Cargo.lock`, and Go dependencies use
+`go.mod`/`go.sum`. CI actions are pinned by commit.
 
 The [schemas](schemas/README.md), [route decisions](docs/decisions/0001-local-foundation.md),
 [sized work plan](docs/week-1-capacity.md), and [original architecture](docs/architecture.md)

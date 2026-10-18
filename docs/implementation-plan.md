@@ -1,7 +1,7 @@
 # Implementation Plan
 # Self-Healing B2B API Mesh & Schema-Drift Compiler
 
-**Status:** Week 1 local foundation started; see [execution status](week-1.md). Future milestones remain planned.
+**Status:** Week 1 foundation and Week 2 local technical spikes implemented; see [Week 2 evidence and open M0 gate](week-2.md). Partner gates and later milestones remain planned.
 **Prepared:** 17 October 2026.  
 **Source:** [Blueprint PDF](High-Moat%20Startup%20Blueprints%202026%20%281%29.pdf), especially pages 2, 5, and 8.  
 **Companion documents:** [PRD](prd.md) · [Architecture](architecture.md).
