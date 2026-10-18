@@ -61,7 +61,10 @@ make down
 
 Compose starts Envoy, separate simulator/collector containers, PostgreSQL, and NATS
 JetStream. Only the gateway (`127.0.0.1:8080`) and Envoy admin
-(`127.0.0.1:9901`) are exposed to the host. PostgreSQL and NATS are infrastructure
+(`127.0.0.1:9901`) are exposed to the host. Envoy joins a separate `host-access`
+bridge so Docker can publish those ports; the backends use the internal `local`
+network. The Week 2 overlay also connects PostgreSQL to `host-access` for its
+loopback-only diagnostic port (`127.0.0.1:15432`). PostgreSQL and NATS are infrastructure
 foundations: the Week 1 collector writes redacted filesystem samples and does not
 yet use them for a ledger or outbox. `make down` retains the local volumes.
 

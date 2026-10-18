@@ -23,15 +23,20 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--url", default="http://127.0.0.1:8081")
     args = parser.parse_args()
+    last_error = "no health response"
     for _ in range(30):
         try:
-            if request(args.url, "/healthz")[0] == 200:
+            status, _ = request(args.url, "/healthz")
+            if status == 200:
                 break
-        except OSError, urllib.error.URLError:
-            pass
+            last_error = f"HTTP {status}"
+        except (OSError, urllib.error.URLError) as error:
+            last_error = str(error)
         time.sleep(1)
     else:
-        raise SystemExit("local service did not become healthy")
+        raise SystemExit(
+            f"local service at {args.url}/healthz did not become healthy: {last_error}"
+        )
 
     for family in ["stripe", "shopify", "netsuite", "generic-json"]:
         for scenario in ["baseline", "field-move", "required-deletion"]:

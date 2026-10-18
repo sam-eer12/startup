@@ -31,5 +31,10 @@ jobs:
       - run: make smoke SMOKE_URL=http://127.0.0.1:8080
       - run: docker compose --env-file deploy/compose/images.env -f deploy/compose/compose.yaml run --rm --build oracle
       - run: make week2-up week2-check
+      - name: Container diagnostics
+        if: failure()
+        run: |
+          docker compose --env-file deploy/compose/images.env -f deploy/compose/compose.yaml -f deploy/compose/week2.yaml ps -a
+          docker compose --env-file deploy/compose/images.env -f deploy/compose/compose.yaml -f deploy/compose/week2.yaml logs --no-color --tail=200
       - if: always()
-        run: docker compose --env-file deploy/compose/images.env -f deploy/compose/compose.yaml down
+        run: docker compose --env-file deploy/compose/images.env -f deploy/compose/compose.yaml -f deploy/compose/week2.yaml down

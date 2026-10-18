@@ -80,7 +80,8 @@ services:
         condition: service_healthy
       simulator:
         condition: service_healthy
-    networks: [local]
+    # Docker does not publish host ports for internal-only containers.
+    networks: [local, host-access]
 
   oracle:
     profiles: [tools]
@@ -94,6 +95,8 @@ services:
 networks:
   local:
     internal: true
+  host-access:
+    driver: bridge
 volumes:
   postgres:
   jetstream:
