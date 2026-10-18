@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.mesh.local/v1/observation.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "tenant_id": {
+      "$ref": "common.schema.json#/$defs/id"
+    },
+    "environment_id": {
+      "$ref": "common.schema.json#/$defs/id"
+    },
+    "observation_id": {
+      "$ref": "common.schema.json#/$defs/id"
+    },
+    "route_id": {
+      "$ref": "common.schema.json#/$defs/id"
+    },
+    "provider_version": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "event_family": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "direction": {
+      "enum": [
+        "webhook",
+        "response"
+      ]
+    },
+    "observed_at": {
+      "$ref": "common.schema.json#/$defs/timestamp"
+    },
+    "expires_at": {
+      "$ref": "common.schema.json#/$defs/timestamp"
+    },
+    "capture_quality": {
+      "enum": [
+        "complete",
+        "truncated",
+        "uncorrelated",
+        "unsupported"
+      ]
+    },
+    "sample_probability": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "maximum": 1
+    },
+    "authoritative": {
+      "const": false
+    },
+    "signature_status": {
+      "enum": [
+        "unverified_fixture",
+        "verified",
+        "invalid"
+      ]
+    },
+    "redaction_policy": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "semantic_verification": {
+      "enum": [
+        "unavailable_after_redaction",
+        "local_required"
+      ]
+    },
+    "redacted_object_ref": {
+      "$ref": "common.schema.json#/$defs/digest"
+    }
+  },
+  "required": [
+    "schema_version",
+    "tenant_id",
+    "environment_id",
+    "observation_id",
+    "route_id",
+    "provider_version",
+    "event_family",
+    "direction",
+    "observed_at",
+    "expires_at",
+    "capture_quality",
+    "sample_probability",
+    "authoritative",
+    "signature_status",
+    "redaction_policy",
+    "semantic_verification",
+    "redacted_object_ref"
+  ]
+}

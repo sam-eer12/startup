@@ -1,0 +1,22 @@
+{
+  "connector": "stripe",
+  "contract_id": "contract_stripe",
+  "contract_version": 1,
+  "direction": "webhook",
+  "environment_id": "env_local",
+  "event_family": "customer.updated",
+  "mode": "observe",
+  "owner": "synthetic-fixture-author",
+  "payload_policy": {
+    "durable_acceptance": false,
+    "locality": "local_only",
+    "redaction_policy": "all-scalars-and-keys-v1",
+    "signature_trust": "unverified_fixture",
+    "telemetry_retention_hours": 24
+  },
+  "provider_version": "fixture-v1",
+  "route_id": "route_stripe",
+  "schema_version": 1,
+  "scope": "synthetic_local",
+  "tenant_id": "tenant_local"
+}

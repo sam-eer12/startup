@@ -1,0 +1,502 @@
+{
+  "author": "synthetic-fixture-author",
+  "cases": [
+    {
+      "assertions": [],
+      "case_id": "case_stripe_baseline",
+      "classification": "no_drift",
+      "connector": "stripe",
+      "expected_output": null,
+      "http_status": 200,
+      "input": "fixtures/synthetic/stripe/baseline.json",
+      "reason": "Independently authored synthetic consumer-compatible payload.",
+      "taxonomy": "baseline"
+    },
+    {
+      "assertions": [
+        {
+          "after": "/data/object/metadata/display_label",
+          "before": "/data/object/metadata/presentation/label",
+          "kind": "value_equal"
+        },
+        {
+          "after": "/id",
+          "before": "/id",
+          "kind": "value_equal"
+        },
+        {
+          "after": "/type",
+          "before": "/type",
+          "kind": "value_equal"
+        },
+        {
+          "after": "/data/object/id",
+          "before": "/data/object/id",
+          "kind": "value_equal"
+        },
+        {
+          "kind": "unchanged_outside",
+          "paths": [
+            "/data/object/metadata/presentation/label",
+            "/data/object/metadata/display_label"
+          ]
+        },
+        {
+          "kind": "absent",
+          "path": "/data/object/metadata/presentation/label"
+        }
+      ],
+      "case_id": "case_stripe_field-move",
+      "classification": "repairable",
+      "connector": "stripe",
+      "expected_output": "fixtures/golden/stripe/field-move.json",
+      "http_status": 200,
+      "input": "fixtures/synthetic/stripe/field-move.json",
+      "reason": "Explicit synthetic equivalence for a noncritical display/tracking field; no destination collision.",
+      "taxonomy": "rename_move"
+    },
+    {
+      "assertions": [],
+      "case_id": "case_stripe_required-deletion",
+      "classification": "unsupported",
+      "connector": "stripe",
+      "expected_output": null,
+      "http_status": 200,
+      "input": "fixtures/synthetic/stripe/required-deletion.json",
+      "reason": "Required identity information is missing; never manufacture it.",
+      "taxonomy": "deletion"
+    },
+    {
+      "assertions": [],
+      "case_id": "case_shopify_baseline",
+      "classification": "no_drift",
+      "connector": "shopify",
+      "expected_output": null,
+      "http_status": 200,
+      "input": "fixtures/synthetic/shopify/baseline.json",
+      "reason": "Independently authored synthetic consumer-compatible payload.",
+      "taxonomy": "baseline"
+    },
+    {
+      "assertions": [
+        {
+          "after": "/vendor",
+          "before": "/details/vendor",
+          "kind": "value_equal"
+        },
+        {
+          "after": "/id",
+          "before": "/id",
+          "kind": "value_equal"
+        },
+        {
+          "after": "/status",
+          "before": "/status",
+          "kind": "value_equal"
+        },
+        {
+          "kind": "unchanged_outside",
+          "paths": [
+            "/details/vendor",
+            "/vendor"
+          ]
+        },
+        {
+          "kind": "absent",
+          "path": "/details/vendor"
+        }
+      ],
+      "case_id": "case_shopify_field-move",
+      "classification": "repairable",
+      "connector": "shopify",
+      "expected_output": "fixtures/golden/shopify/field-move.json",
+      "http_status": 200,
+      "input": "fixtures/synthetic/shopify/field-move.json",
+      "reason": "Explicit synthetic equivalence for a noncritical display/tracking field; no destination collision.",
+      "taxonomy": "rename_move"
+    },
+    {
+      "assertions": [],
+      "case_id": "case_shopify_required-deletion",
+      "classification": "unsupported",
+      "connector": "shopify",
+      "expected_output": null,
+      "http_status": 200,
+      "input": "fixtures/synthetic/shopify/required-deletion.json",
+      "reason": "Required identity information is missing; never manufacture it.",
+      "taxonomy": "deletion"
+    },
+    {
+      "assertions": [],
+      "case_id": "case_netsuite_baseline",
+      "classification": "no_drift",
+      "connector": "netsuite",
+      "expected_output": null,
+      "http_status": 200,
+      "input": "fixtures/synthetic/netsuite/baseline.json",
+      "reason": "Independently authored synthetic consumer-compatible payload.",
+      "taxonomy": "baseline"
+    },
+    {
+      "assertions": [
+        {
+          "after": "/displayName",
+          "before": "/presentation/displayName",
+          "kind": "value_equal"
+        },
+        {
+          "after": "/id",
+          "before": "/id",
+          "kind": "value_equal"
+        },
+        {
+          "after": "/itemId",
+          "before": "/itemId",
+          "kind": "value_equal"
+        },
+        {
+          "kind": "unchanged_outside",
+          "paths": [
+            "/presentation/displayName",
+            "/displayName"
+          ]
+        },
+        {
+          "kind": "absent",
+          "path": "/presentation/displayName"
+        }
+      ],
+      "case_id": "case_netsuite_field-move",
+      "classification": "repairable",
+      "connector": "netsuite",
+      "expected_output": "fixtures/golden/netsuite/field-move.json",
+      "http_status": 200,
+      "input": "fixtures/synthetic/netsuite/field-move.json",
+      "reason": "Explicit synthetic equivalence for a noncritical display/tracking field; no destination collision.",
+      "taxonomy": "rename_move"
+    },
+    {
+      "assertions": [],
+      "case_id": "case_netsuite_required-deletion",
+      "classification": "unsupported",
+      "connector": "netsuite",
+      "expected_output": null,
+      "http_status": 200,
+      "input": "fixtures/synthetic/netsuite/required-deletion.json",
+      "reason": "Required identity information is missing; never manufacture it.",
+      "taxonomy": "deletion"
+    },
+    {
+      "assertions": [],
+      "case_id": "case_generic-json_baseline",
+      "classification": "no_drift",
+      "connector": "generic-json",
+      "expected_output": null,
+      "http_status": 200,
+      "input": "fixtures/synthetic/generic-json/baseline.json",
+      "reason": "Independently authored synthetic consumer-compatible payload.",
+      "taxonomy": "baseline"
+    },
+    {
+      "assertions": [
+        {
+          "after": "/shipment/tracking_number",
+          "before": "/shipment/tracking/number",
+          "kind": "value_equal"
+        },
+        {
+          "after": "/id",
+          "before": "/id",
+          "kind": "value_equal"
+        },
+        {
+          "after": "/shipment/id",
+          "before": "/shipment/id",
+          "kind": "value_equal"
+        },
+        {
+          "after": "/shipment/status",
+          "before": "/shipment/status",
+          "kind": "value_equal"
+        },
+        {
+          "after": "/shipment/weight_grams",
+          "before": "/shipment/weight_grams",
+          "kind": "value_equal"
+        },
+        {
+          "kind": "unchanged_outside",
+          "paths": [
+            "/shipment/tracking/number",
+            "/shipment/tracking_number"
+          ]
+        },
+        {
+          "kind": "absent",
+          "path": "/shipment/tracking/number"
+        }
+      ],
+      "case_id": "case_generic-json_field-move",
+      "classification": "repairable",
+      "connector": "generic-json",
+      "expected_output": "fixtures/golden/generic-json/field-move.json",
+      "http_status": 200,
+      "input": "fixtures/synthetic/generic-json/field-move.json",
+      "reason": "Explicit synthetic equivalence for a noncritical display/tracking field; no destination collision.",
+      "taxonomy": "rename_move"
+    },
+    {
+      "assertions": [],
+      "case_id": "case_generic-json_required-deletion",
+      "classification": "unsupported",
+      "connector": "generic-json",
+      "expected_output": null,
+      "http_status": 200,
+      "input": "fixtures/synthetic/generic-json/required-deletion.json",
+      "reason": "Required identity information is missing; never manufacture it.",
+      "taxonomy": "deletion"
+    },
+    {
+      "assertions": [],
+      "case_id": "case_generic-json_nullable",
+      "classification": "unsupported",
+      "connector": "generic-json",
+      "expected_output": null,
+      "http_status": 200,
+      "input": "fixtures/synthetic/generic-json/nullable.json",
+      "reason": "Null is not a missing or valid string tracking identifier.",
+      "taxonomy": "nullable_missing"
+    },
+    {
+      "assertions": [],
+      "case_id": "case_generic-json_incompatible-type",
+      "classification": "unsupported",
+      "connector": "generic-json",
+      "expected_output": null,
+      "http_status": 200,
+      "input": "fixtures/synthetic/generic-json/incompatible-type.json",
+      "reason": "Opaque tracking identifiers must never be coerced to numbers.",
+      "taxonomy": "incompatible_type"
+    },
+    {
+      "assertions": [],
+      "case_id": "case_generic-json_enum-change",
+      "classification": "unsupported",
+      "connector": "generic-json",
+      "expected_output": null,
+      "http_status": 200,
+      "input": "fixtures/synthetic/generic-json/enum-change.json",
+      "reason": "Unknown business state needs an owner decision.",
+      "taxonomy": "enum_change"
+    },
+    {
+      "assertions": [],
+      "case_id": "case_generic-json_unit-change",
+      "classification": "unsupported",
+      "connector": "generic-json",
+      "expected_output": null,
+      "http_status": 200,
+      "input": "fixtures/synthetic/generic-json/unit-change.json",
+      "reason": "Schema-valid but wrong unit: shape validation cannot prove business meaning.",
+      "taxonomy": "unit_change"
+    },
+    {
+      "assertions": [],
+      "case_id": "case_generic-json_missing",
+      "classification": "unsupported",
+      "connector": "generic-json",
+      "expected_output": null,
+      "http_status": 200,
+      "input": "fixtures/synthetic/generic-json/missing.json",
+      "reason": "Missing required tracking identifier has no equivalent source.",
+      "taxonomy": "nullable_missing"
+    },
+    {
+      "assertions": [],
+      "case_id": "case_generic-json_collision",
+      "classification": "unsupported",
+      "connector": "generic-json",
+      "expected_output": null,
+      "http_status": 200,
+      "input": "fixtures/synthetic/generic-json/collision.json",
+      "reason": "An existing destination blocks a move even if the source looks plausible.",
+      "taxonomy": "rename_move"
+    },
+    {
+      "assertions": [],
+      "case_id": "case_generic-json_auth",
+      "classification": "unsupported",
+      "connector": "generic-json",
+      "expected_output": null,
+      "http_status": 401,
+      "input": "fixtures/synthetic/generic-json/auth.json",
+      "reason": "401 is an operational/security failure, not schema drift.",
+      "taxonomy": "auth"
+    },
+    {
+      "assertions": [],
+      "case_id": "case_generic-json_rate-limiting",
+      "classification": "unsupported",
+      "connector": "generic-json",
+      "expected_output": null,
+      "http_status": 429,
+      "input": "fixtures/synthetic/generic-json/rate-limiting.json",
+      "reason": "429 needs bounded operational backoff, not a payload adapter.",
+      "taxonomy": "rate_limiting"
+    },
+    {
+      "assertions": [],
+      "case_id": "case_generic-json_pagination",
+      "classification": "unsupported",
+      "connector": "generic-json",
+      "expected_output": null,
+      "http_status": 200,
+      "input": "fixtures/synthetic/generic-json/pagination.json",
+      "reason": "A repeated pagination cursor requires sequence evidence; no single-body repair.",
+      "taxonomy": "pagination"
+    }
+  ],
+  "contains_customer_data": false,
+  "corpus_id": "corpus_synthetic_v1",
+  "created_at": "2026-10-18T00:00:00Z",
+  "eligible_for_release": false,
+  "files": [
+    {
+      "path": "connectors/generic-json/consumer-contract.json",
+      "sha256": "sha256:1185072ee37020c54cfbf2e349a33c6a05d085d73821e2732884e95064ae7481"
+    },
+    {
+      "path": "connectors/generic-json/route.json",
+      "sha256": "sha256:8bb2889aa2506d9626ecf651645d97954f13f3bdcdaad219067c6fcd42779c7d"
+    },
+    {
+      "path": "connectors/netsuite/consumer-contract.json",
+      "sha256": "sha256:53257d0bac0d1f245744f85e68a8e9ebbeb8d27ab24f16464ee612859ae5bec8"
+    },
+    {
+      "path": "connectors/netsuite/route.json",
+      "sha256": "sha256:24cda489b9a4eaafedf9bf2ceac997f72c18bfd45ed3a921abd7873a99675ff2"
+    },
+    {
+      "path": "connectors/shopify/consumer-contract.json",
+      "sha256": "sha256:86a9f57a37e96e7e86d9f0b5948c6fa241175ecc7a0253ce8d61f9a5eb1147f4"
+    },
+    {
+      "path": "connectors/shopify/route.json",
+      "sha256": "sha256:cb8e36475c196150214680231f6d1f576f5a9e3208ba15a2ca87530dbc738632"
+    },
+    {
+      "path": "connectors/stripe/consumer-contract.json",
+      "sha256": "sha256:8b5ebee634d2fc50f902c1cea8481ffcad741c924f97d44abb19b0aabc594264"
+    },
+    {
+      "path": "connectors/stripe/route.json",
+      "sha256": "sha256:b2bccf3fd2d0946b14840bd1f64ae64bd8542898977400e86614b537423e4dac"
+    },
+    {
+      "path": "fixtures/golden/generic-json/field-move.json",
+      "sha256": "sha256:8cdfe99716afb79a91d39bc9722c8fe345a10160e77bdf1c1c853c4e655f17a6"
+    },
+    {
+      "path": "fixtures/golden/netsuite/field-move.json",
+      "sha256": "sha256:ef15962cbbaf750785da47fdc8fff02bab451e1f270bc86ec236e93cc3fe10e3"
+    },
+    {
+      "path": "fixtures/golden/shopify/field-move.json",
+      "sha256": "sha256:89d093557bc92f97e2a56337d80712874c760f4c1c3d9f74265ff123c5043977"
+    },
+    {
+      "path": "fixtures/golden/stripe/field-move.json",
+      "sha256": "sha256:7de51e81000d8c518dd4d253bb8057750fe64805537422f313f1b5dfe329024e"
+    },
+    {
+      "path": "fixtures/synthetic/generic-json/auth.json",
+      "sha256": "sha256:f51773294da8ab5645006426ca34dadf815f6c5995f4bf4924354af04bb6b1dd"
+    },
+    {
+      "path": "fixtures/synthetic/generic-json/baseline.json",
+      "sha256": "sha256:0f494ae70272f196a879c8bb346cab54156ac4b0e448eaa7a5e2cf07460bb568"
+    },
+    {
+      "path": "fixtures/synthetic/generic-json/collision.json",
+      "sha256": "sha256:354e931845342b493a73ceef5548a6b8e463200485ebbdfc0a978f58647e7a32"
+    },
+    {
+      "path": "fixtures/synthetic/generic-json/enum-change.json",
+      "sha256": "sha256:2bb2e8c990928df9be6690076626aed8fce25bb53d89b93cade2e828ebff8ab1"
+    },
+    {
+      "path": "fixtures/synthetic/generic-json/field-move.json",
+      "sha256": "sha256:94d8264aa9c84cc4f95986e47ec740fbc8c834f9d41cfb20e934a5878a21505e"
+    },
+    {
+      "path": "fixtures/synthetic/generic-json/incompatible-type.json",
+      "sha256": "sha256:28c20f2195a74e8e661e118a3f9e3137dc3cfaf7ae32b8c63524cb13569cbfe7"
+    },
+    {
+      "path": "fixtures/synthetic/generic-json/missing.json",
+      "sha256": "sha256:dc52c166d3887b18059734b1f4cc2764979cbe5a2258e7060c9ac4df494cde8d"
+    },
+    {
+      "path": "fixtures/synthetic/generic-json/nullable.json",
+      "sha256": "sha256:199c75367e160e107c0c9259402688b78bfd9e48e01e9504110dd6ce235a4789"
+    },
+    {
+      "path": "fixtures/synthetic/generic-json/pagination.json",
+      "sha256": "sha256:34519d0bf496cb2f8a13a9bb598419dc884092de9aaba00e5c9f67e3bc39f650"
+    },
+    {
+      "path": "fixtures/synthetic/generic-json/rate-limiting.json",
+      "sha256": "sha256:0c124c9a57688fadaabb25ae38a4b7e66365c85658826f67d64c77595f57a06c"
+    },
+    {
+      "path": "fixtures/synthetic/generic-json/required-deletion.json",
+      "sha256": "sha256:49e3bf8b483cb50da8f0ce8d5a942df7fb81cbd20d76d7f5f3c5b8132bcae09a"
+    },
+    {
+      "path": "fixtures/synthetic/generic-json/unit-change.json",
+      "sha256": "sha256:67418f5a5bda95159dc5706790e1521b0d615de520073beea41c05c3c73ae4bd"
+    },
+    {
+      "path": "fixtures/synthetic/netsuite/baseline.json",
+      "sha256": "sha256:4b09593ae0663c0f2d8c0a667179051d9e867f6cc94f004e51b0f0157352c979"
+    },
+    {
+      "path": "fixtures/synthetic/netsuite/field-move.json",
+      "sha256": "sha256:43125c3eef37214cbd1a20c39fee294fd6f355dd298534e8d74d21070feca6aa"
+    },
+    {
+      "path": "fixtures/synthetic/netsuite/required-deletion.json",
+      "sha256": "sha256:5f9dbeaa271fa75cf2047be8728c724a7caa664dac1bf73aa0fd4b181154932c"
+    },
+    {
+      "path": "fixtures/synthetic/shopify/baseline.json",
+      "sha256": "sha256:2073b340f2e72b3f86b5cec419461f40af2d8840de0f90ecc74c20f1a61d4abd"
+    },
+    {
+      "path": "fixtures/synthetic/shopify/field-move.json",
+      "sha256": "sha256:a69676ffc6c3415007ff7c2bb02858c3a502fa123280c030e8f5c8ad61c5e68a"
+    },
+    {
+      "path": "fixtures/synthetic/shopify/required-deletion.json",
+      "sha256": "sha256:c572393ef981e492a949a46a776fd3556b72c333b1bad4addefe04c59e1f6b07"
+    },
+    {
+      "path": "fixtures/synthetic/stripe/baseline.json",
+      "sha256": "sha256:80c1d1cb58f7884f8f5be2fc0539b66d62553bd16dd3471a4ef84faababb1ddb"
+    },
+    {
+      "path": "fixtures/synthetic/stripe/field-move.json",
+      "sha256": "sha256:267dc1137267ad4dd3a42f059748ed15dd8f059f2a99206dc6fc813d70b15748"
+    },
+    {
+      "path": "fixtures/synthetic/stripe/required-deletion.json",
+      "sha256": "sha256:566f85cd7b34d2df4eb4faa8363fb35730d07fa4890a90842ec3e452b90155aa"
+    }
+  ],
+  "holdout_cases": 0,
+  "license": "Repository-owned synthetic test data; no third-party payloads.",
+  "origin": "synthetic",
+  "provenance": "Hand-authored local examples and invented mutations; no provider incident, account capture or partner approval is claimed.",
+  "schema_version": 1
+}

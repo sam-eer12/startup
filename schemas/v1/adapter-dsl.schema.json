@@ -1,0 +1,273 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.mesh.local/v1/adapter-dsl.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "tenant_id": {
+      "$ref": "common.schema.json#/$defs/id"
+    },
+    "environment_id": {
+      "$ref": "common.schema.json#/$defs/id"
+    },
+    "adapter_id": {
+      "$ref": "common.schema.json#/$defs/id"
+    },
+    "route_id": {
+      "$ref": "common.schema.json#/$defs/id"
+    },
+    "direction": {
+      "enum": [
+        "webhook",
+        "response"
+      ]
+    },
+    "source_contract_sha256": {
+      "$ref": "common.schema.json#/$defs/digest"
+    },
+    "target_contract_sha256": {
+      "$ref": "common.schema.json#/$defs/digest"
+    },
+    "semantic_evidence_ref": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "guard": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "required_paths": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/pointer"
+          },
+          "minItems": 1,
+          "maxItems": 1000
+        },
+        "absent_paths": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/pointer"
+          },
+          "minItems": 0,
+          "maxItems": 1000
+        }
+      },
+      "required": [
+        "required_paths",
+        "absent_paths"
+      ]
+    },
+    "operations": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "op": {
+                "const": "copy"
+              },
+              "from": {
+                "$ref": "common.schema.json#/$defs/pointer"
+              },
+              "path": {
+                "$ref": "common.schema.json#/$defs/pointer"
+              },
+              "source_type": {
+                "$ref": "common.schema.json#/$defs/type"
+              },
+              "target_type": {
+                "$ref": "common.schema.json#/$defs/type"
+              },
+              "on_missing": {
+                "const": "reject"
+              },
+              "on_conflict": {
+                "const": "reject"
+              }
+            },
+            "required": [
+              "op",
+              "from",
+              "path",
+              "source_type",
+              "target_type",
+              "on_missing",
+              "on_conflict"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "op": {
+                "const": "move"
+              },
+              "from": {
+                "$ref": "common.schema.json#/$defs/pointer"
+              },
+              "path": {
+                "$ref": "common.schema.json#/$defs/pointer"
+              },
+              "source_type": {
+                "$ref": "common.schema.json#/$defs/type"
+              },
+              "target_type": {
+                "$ref": "common.schema.json#/$defs/type"
+              },
+              "on_missing": {
+                "const": "reject"
+              },
+              "on_conflict": {
+                "const": "reject"
+              }
+            },
+            "required": [
+              "op",
+              "from",
+              "path",
+              "source_type",
+              "target_type",
+              "on_missing",
+              "on_conflict"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "op": {
+                "const": "remove"
+              },
+              "path": {
+                "$ref": "common.schema.json#/$defs/pointer"
+              },
+              "authorization_ref": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              }
+            },
+            "required": [
+              "op",
+              "path",
+              "authorization_ref"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "op": {
+                "const": "assert"
+              },
+              "path": {
+                "$ref": "common.schema.json#/$defs/pointer"
+              },
+              "expected_type": {
+                "$ref": "common.schema.json#/$defs/type"
+              }
+            },
+            "required": [
+              "op",
+              "path",
+              "expected_type"
+            ]
+          }
+        ]
+      },
+      "minItems": 1,
+      "maxItems": 1000
+    },
+    "assertions": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "kind": {
+                "const": "value_equal"
+              },
+              "before": {
+                "$ref": "common.schema.json#/$defs/pointer"
+              },
+              "after": {
+                "$ref": "common.schema.json#/$defs/pointer"
+              }
+            },
+            "required": [
+              "kind",
+              "before",
+              "after"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "kind": {
+                "const": "unchanged_outside"
+              },
+              "paths": {
+                "type": "array",
+                "items": {
+                  "$ref": "common.schema.json#/$defs/pointer"
+                },
+                "minItems": 1,
+                "maxItems": 1000
+              }
+            },
+            "required": [
+              "kind",
+              "paths"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "kind": {
+                "const": "absent"
+              },
+              "path": {
+                "$ref": "common.schema.json#/$defs/pointer"
+              }
+            },
+            "required": [
+              "kind",
+              "path"
+            ]
+          }
+        ]
+      },
+      "minItems": 1,
+      "maxItems": 1000
+    },
+    "unmatched_input": {
+      "const": "validate_target_or_reject"
+    }
+  },
+  "required": [
+    "schema_version",
+    "tenant_id",
+    "environment_id",
+    "adapter_id",
+    "route_id",
+    "direction",
+    "source_contract_sha256",
+    "target_contract_sha256",
+    "semantic_evidence_ref",
+    "guard",
+    "operations",
+    "assertions",
+    "unmatched_input"
+  ]
+}

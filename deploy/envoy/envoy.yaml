@@ -1,0 +1,52 @@
+# Week 1 local routing only. No ext_proc/transform/signature claims until Week 2.
+admin:
+  address:
+    socket_address: {address: 0.0.0.0, port_value: 9901}
+static_resources:
+  listeners:
+    - name: local_http
+      address:
+        socket_address: {address: 0.0.0.0, port_value: 8080}
+      filter_chains:
+        - filters:
+            - name: envoy.filters.network.http_connection_manager
+              typed_config:
+                "@type": type.googleapis.com/envoy.extensions.filters.network.http_connection_manager.v3.HttpConnectionManager
+                stat_prefix: local_gateway
+                stream_idle_timeout: 5s
+                request_headers_timeout: 3s
+                route_config:
+                  name: local_routes
+                  virtual_hosts:
+                    - name: local
+                      domains: ["*"]
+                      routes:
+                        - match: {prefix: /fixtures/}
+                          route: {cluster: simulator, timeout: 5s}
+                        - match: {prefix: /}
+                          route: {cluster: collector, timeout: 5s}
+                http_filters:
+                  - name: envoy.filters.http.router
+                    typed_config:
+                      "@type": type.googleapis.com/envoy.extensions.filters.http.router.v3.Router
+  clusters:
+    - name: collector
+      type: STRICT_DNS
+      connect_timeout: 1s
+      load_assignment:
+        cluster_name: collector
+        endpoints:
+          - lb_endpoints:
+              - endpoint:
+                  address:
+                    socket_address: {address: collector, port_value: 8081}
+    - name: simulator
+      type: STRICT_DNS
+      connect_timeout: 1s
+      load_assignment:
+        cluster_name: simulator
+        endpoints:
+          - lb_endpoints:
+              - endpoint:
+                  address:
+                    socket_address: {address: simulator, port_value: 8082}

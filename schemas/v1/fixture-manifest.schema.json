@@ -1,0 +1,308 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.mesh.local/v1/fixture-manifest.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "corpus_id": {
+      "$ref": "common.schema.json#/$defs/id"
+    },
+    "origin": {
+      "const": "synthetic"
+    },
+    "author": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "created_at": {
+      "$ref": "common.schema.json#/$defs/timestamp"
+    },
+    "provenance": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "license": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "contains_customer_data": {
+      "const": false
+    },
+    "eligible_for_release": {
+      "const": false
+    },
+    "holdout_cases": {
+      "const": 0
+    },
+    "cases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "case_id": {
+            "$ref": "common.schema.json#/$defs/id"
+          },
+          "connector": {
+            "enum": [
+              "stripe",
+              "shopify",
+              "netsuite",
+              "generic-json"
+            ]
+          },
+          "taxonomy": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "classification": {
+            "enum": [
+              "repairable",
+              "unsupported",
+              "no_drift"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "input": {
+            "type": "string",
+            "pattern": "^(fixtures|connectors)/[a-zA-Z0-9_./-]+\\.json$"
+          },
+          "expected_output": {
+            "oneOf": [
+              {
+                "type": "string",
+                "pattern": "^(fixtures|connectors)/[a-zA-Z0-9_./-]+\\.json$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "assertions": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "kind": {
+                      "const": "value_equal"
+                    },
+                    "before": {
+                      "$ref": "common.schema.json#/$defs/pointer"
+                    },
+                    "after": {
+                      "$ref": "common.schema.json#/$defs/pointer"
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "before",
+                    "after"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "kind": {
+                      "const": "unchanged_outside"
+                    },
+                    "paths": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "common.schema.json#/$defs/pointer"
+                      },
+                      "minItems": 1,
+                      "maxItems": 1000
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "paths"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "kind": {
+                      "const": "absent"
+                    },
+                    "path": {
+                      "$ref": "common.schema.json#/$defs/pointer"
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "path"
+                  ]
+                }
+              ]
+            },
+            "minItems": 0,
+            "maxItems": 1000
+          },
+          "http_status": {
+            "type": "integer",
+            "minimum": 100,
+            "maximum": 599
+          }
+        },
+        "required": [
+          "case_id",
+          "connector",
+          "taxonomy",
+          "classification",
+          "reason",
+          "input",
+          "expected_output",
+          "assertions",
+          "http_status"
+        ],
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "classification": {
+                  "const": "repairable"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "expected_output": {
+                  "type": "string",
+                  "pattern": "^(fixtures|connectors)/[a-zA-Z0-9_./-]+\\.json$"
+                },
+                "assertions": {
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "kind": {
+                            "const": "value_equal"
+                          },
+                          "before": {
+                            "$ref": "common.schema.json#/$defs/pointer"
+                          },
+                          "after": {
+                            "$ref": "common.schema.json#/$defs/pointer"
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "before",
+                          "after"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "kind": {
+                            "const": "unchanged_outside"
+                          },
+                          "paths": {
+                            "type": "array",
+                            "items": {
+                              "$ref": "common.schema.json#/$defs/pointer"
+                            },
+                            "minItems": 1,
+                            "maxItems": 1000
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "paths"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "kind": {
+                            "const": "absent"
+                          },
+                          "path": {
+                            "$ref": "common.schema.json#/$defs/pointer"
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "path"
+                        ]
+                      }
+                    ]
+                  },
+                  "minItems": 1,
+                  "maxItems": 1000
+                }
+              }
+            },
+            "else": {
+              "properties": {
+                "expected_output": {
+                  "type": "null"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "minItems": 8,
+      "maxItems": 1000
+    },
+    "files": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "path": {
+            "type": "string",
+            "pattern": "^(fixtures|connectors)/[a-zA-Z0-9_./-]+\\.json$"
+          },
+          "sha256": {
+            "$ref": "common.schema.json#/$defs/digest"
+          }
+        },
+        "required": [
+          "path",
+          "sha256"
+        ]
+      },
+      "minItems": 8,
+      "maxItems": 1000
+    }
+  },
+  "required": [
+    "schema_version",
+    "corpus_id",
+    "origin",
+    "author",
+    "created_at",
+    "provenance",
+    "license",
+    "contains_customer_data",
+    "eligible_for_release",
+    "holdout_cases",
+    "cases",
+    "files"
+  ]
+}

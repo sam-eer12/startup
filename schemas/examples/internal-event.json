@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "tenant_id": "tenant_local",
+  "environment_id": "env_local",
+  "event_id": "bc58abdb-4ac2-4de8-b732-e5a2e063d941",
+  "event_type": "observation.captured.v1",
+  "aggregate_id": "obs_example",
+  "aggregate_revision": 1,
+  "occurred_at": "2026-10-18T00:00:00Z",
+  "trace_id": "00000000000000000000000000000000",
+  "payload_ref": "example:redacted-object-only",
+  "payload_sha256": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+}

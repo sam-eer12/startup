@@ -1,0 +1,35 @@
+{
+  "authority": "synthetic_fixture",
+  "contract_id": "contract_shopify",
+  "contract_version": 1,
+  "dialect": "https://json-schema.org/draft/2020-12/schema",
+  "environment_id": "env_local",
+  "owner": "synthetic-fixture-author",
+  "schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": true,
+    "properties": {
+      "id": {
+        "type": "integer"
+      },
+      "status": {
+        "enum": [
+          "active",
+          "draft",
+          "archived"
+        ]
+      },
+      "vendor": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "id",
+      "vendor",
+      "status"
+    ],
+    "type": "object"
+  },
+  "schema_version": 1,
+  "tenant_id": "tenant_local"
+}

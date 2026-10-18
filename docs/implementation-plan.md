@@ -1,7 +1,7 @@
 # Implementation Plan
 # Self-Healing B2B API Mesh & Schema-Drift Compiler
 
-**Status:** Proposed execution plan; no implementation is claimed.  
+**Status:** Week 1 local foundation started; see [execution status](week-1.md). Future milestones remain planned.
 **Prepared:** 17 October 2026.  
 **Source:** [Blueprint PDF](High-Moat%20Startup%20Blueprints%202026%20%281%29.pdf), especially pages 2, 5, and 8.  
 **Companion documents:** [PRD](prd.md) · [Architecture](architecture.md).
@@ -360,7 +360,7 @@ The table ensures every PRD feature has an owner, milestone, and verification me
 
 ## 5. Repository and implementation structure
 
-Proposed layout to create during implementation; these paths do not currently exist merely because they appear here:
+Target layout. Week 1 implements a subset; see [execution status](week-1.md) for the current inventory. A path shown here alone does not claim an implemented service:
 
 ```text
 apps/

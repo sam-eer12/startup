@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.mesh.local/v1/internal-event.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "tenant_id": {
+      "$ref": "common.schema.json#/$defs/id"
+    },
+    "environment_id": {
+      "$ref": "common.schema.json#/$defs/id"
+    },
+    "event_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "event_type": {
+      "type": "string",
+      "pattern": "^(observation|drift|candidate|verification|release|audit|usage)\\.[a-z_]+\\.v1$"
+    },
+    "aggregate_id": {
+      "$ref": "common.schema.json#/$defs/id"
+    },
+    "aggregate_revision": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "occurred_at": {
+      "$ref": "common.schema.json#/$defs/timestamp"
+    },
+    "trace_id": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{32}$"
+    },
+    "payload_ref": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "payload_sha256": {
+      "$ref": "common.schema.json#/$defs/digest"
+    }
+  },
+  "required": [
+    "schema_version",
+    "tenant_id",
+    "environment_id",
+    "event_id",
+    "event_type",
+    "aggregate_id",
+    "aggregate_revision",
+    "occurred_at",
+    "trace_id",
+    "payload_ref",
+    "payload_sha256"
+  ]
+}

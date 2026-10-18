@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.mesh.local/v1/verification-manifest.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "tenant_id": {
+      "$ref": "common.schema.json#/$defs/id"
+    },
+    "environment_id": {
+      "$ref": "common.schema.json#/$defs/id"
+    },
+    "verification_id": {
+      "$ref": "common.schema.json#/$defs/id"
+    },
+    "route_id": {
+      "$ref": "common.schema.json#/$defs/id"
+    },
+    "source_contract_sha256": {
+      "$ref": "common.schema.json#/$defs/digest"
+    },
+    "target_contract_sha256": {
+      "$ref": "common.schema.json#/$defs/digest"
+    },
+    "dsl_sha256": {
+      "$ref": "common.schema.json#/$defs/digest"
+    },
+    "artifact_sha256": {
+      "$ref": "common.schema.json#/$defs/digest"
+    },
+    "policy_sha256": {
+      "$ref": "common.schema.json#/$defs/digest"
+    },
+    "corpus_sha256": {
+      "$ref": "common.schema.json#/$defs/digest"
+    },
+    "runtime_version": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "abi_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "created_at": {
+      "$ref": "common.schema.json#/$defs/timestamp"
+    },
+    "expires_at": {
+      "$ref": "common.schema.json#/$defs/timestamp"
+    },
+    "result": {
+      "enum": [
+        "passed",
+        "failed",
+        "incomplete"
+      ]
+    },
+    "corpus_origin": {
+      "enum": [
+        "synthetic",
+        "sanitized_real",
+        "raw_local"
+      ]
+    },
+    "distinct_cases": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "holdout_cases": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "coverage_gaps": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 512
+      },
+      "minItems": 0,
+      "maxItems": 1000
+    },
+    "signer_key_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "signature_ref": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    }
+  },
+  "required": [
+    "schema_version",
+    "tenant_id",
+    "environment_id",
+    "verification_id",
+    "route_id",
+    "source_contract_sha256",
+    "target_contract_sha256",
+    "dsl_sha256",
+    "artifact_sha256",
+    "policy_sha256",
+    "corpus_sha256",
+    "runtime_version",
+    "abi_version",
+    "created_at",
+    "expires_at",
+    "result",
+    "corpus_origin",
+    "distinct_cases",
+    "holdout_cases",
+    "coverage_gaps",
+    "signer_key_id",
+    "signature_ref"
+  ]
+}

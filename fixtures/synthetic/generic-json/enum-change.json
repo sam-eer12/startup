@@ -1,0 +1,10 @@
+{
+  "id": "event-local-001",
+  "shipment": {
+    "id": "shipment-local-001",
+    "note": null,
+    "status": "returned_to_sender",
+    "tracking_number": "TRACK-0001",
+    "weight_grams": 1000
+  }
+}

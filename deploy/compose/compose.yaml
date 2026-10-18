@@ -1,0 +1,97 @@
+name: mesh-local
+services:
+  postgres:
+    image: ${POSTGRES_IMAGE:?use --env-file deploy/compose/images.env}
+    environment:
+      POSTGRES_DB: mesh_local
+      POSTGRES_USER: mesh_local
+      POSTGRES_PASSWORD: synthetic-local-only
+    volumes:
+      - postgres:/var/lib/postgresql
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U mesh_local -d mesh_local"]
+      interval: 2s
+      timeout: 2s
+      retries: 30
+    networks: [local]
+
+  nats:
+    image: ${NATS_IMAGE:?use the image lock}
+    command: [--config, /etc/nats/nats.conf]
+    volumes:
+      - ./nats.conf:/etc/nats/nats.conf:ro
+      - jetstream:/data
+    healthcheck:
+      test: [CMD, wget, -q, -O, /dev/null, "http://127.0.0.1:8222/healthz?js-enabled-only=true"]
+      interval: 2s
+      timeout: 2s
+      retries: 30
+    networks: [local]
+
+  collector:
+    build:
+      context: ../..
+      dockerfile: deploy/compose/Dockerfile.service
+      args:
+        GO_IMAGE: ${GO_IMAGE:?use the image lock}
+    command: [-listen, "0.0.0.0:8081", -container-local, -mode, collector, -objects, /data/objects]
+    volumes:
+      - objects:/data
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    healthcheck:
+      test: [CMD, /meshctl, -url, "http://127.0.0.1:8081", health]
+      interval: 2s
+      timeout: 2s
+      retries: 30
+    networks: [local]
+
+  simulator:
+    build:
+      context: ../..
+      dockerfile: deploy/compose/Dockerfile.service
+      args:
+        GO_IMAGE: ${GO_IMAGE:?use the image lock}
+    command: [-listen, "0.0.0.0:8082", -container-local, -mode, simulator, -objects, /data/objects]
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    healthcheck:
+      test: [CMD, /meshctl, -url, "http://127.0.0.1:8082", health]
+      interval: 2s
+      timeout: 2s
+      retries: 30
+    networks: [local]
+
+  envoy:
+    image: ${ENVOY_IMAGE:?use the image lock}
+    command: [-c, /etc/envoy/envoy.yaml, --log-level, warning]
+    ports:
+      - "127.0.0.1:8080:8080"
+      - "127.0.0.1:9901:9901"
+    volumes:
+      - ../envoy/envoy.yaml:/etc/envoy/envoy.yaml:ro
+    depends_on:
+      collector:
+        condition: service_healthy
+      simulator:
+        condition: service_healthy
+    networks: [local]
+
+  oracle:
+    profiles: [tools]
+    build:
+      context: ../..
+      dockerfile: deploy/compose/Dockerfile.rust
+      args:
+        RUST_IMAGE: ${RUST_IMAGE:?use the image lock}
+    network_mode: none
+
+networks:
+  local:
+    internal: true
+volumes:
+  postgres:
+  jetstream:
+  objects:

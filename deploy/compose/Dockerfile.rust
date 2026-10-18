@@ -1,0 +1,9 @@
+ARG RUST_IMAGE
+FROM ${RUST_IMAGE}
+WORKDIR /src
+COPY Cargo.toml Cargo.lock rust-toolchain.toml ./
+COPY crates ./crates
+RUN cargo fetch --locked
+COPY fixtures ./fixtures
+COPY connectors ./connectors
+CMD ["cargo", "run", "--locked", "--offline", "-p", "verifier"]
