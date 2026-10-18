@@ -1,0 +1,30 @@
+{
+  "recorded_at": "2026-10-18T05:38:53.199118+00:00",
+  "kind": "post-sweep instantaneous service snapshot, not peak qualification",
+  "containers": [
+    {
+      "id": "c5cbad32f434",
+      "name": "mesh-local-envoy-1",
+      "cpu_time": "1.274773s",
+      "cpu_percent": "0.36%",
+      "avg_cpu": "0.36%",
+      "mem_usage": "82.21MB / 3.293GB",
+      "mem_percent": "2.50%",
+      "net_io": "262.1MB / 327.5MB",
+      "block_io": "110.3MB / 0B",
+      "pids": "11"
+    },
+    {
+      "id": "3283a902c1c5",
+      "name": "mesh-local-executor-1",
+      "cpu_time": "2.789116s",
+      "cpu_percent": "1.70%",
+      "avg_cpu": "1.70%",
+      "mem_usage": "47.86MB / 3.293GB",
+      "mem_percent": "1.45%",
+      "net_io": "131MB / 65.66MB",
+      "block_io": "27.87MB / 0B",
+      "pids": "7"
+    }
+  ]
+}

@@ -8,7 +8,9 @@ permissions:
 jobs:
   checks:
     runs-on: ubuntu-24.04
-    timeout-minutes: 20
+    timeout-minutes: 30
+    env:
+      COMPOSE_PROVIDER: docker compose
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -16,11 +18,11 @@ jobs:
       - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
           go-version: 1.27.2
-          cache: false # No external Go modules yet; no empty go.sum placeholder.
+          cache: true
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: 3.14.8
-      - run: rustup toolchain install 1.99.1 --profile minimal --component clippy,rustfmt
+      - run: rustup toolchain install 1.99.1 --profile minimal --component clippy,rustfmt --target wasm32-unknown-unknown
       - run: make bootstrap
       - run: make check build
       - run: cargo install cargo-audit --version 0.22.2 --locked
@@ -28,5 +30,6 @@ jobs:
       - run: make compose-check up
       - run: make smoke SMOKE_URL=http://127.0.0.1:8080
       - run: docker compose --env-file deploy/compose/images.env -f deploy/compose/compose.yaml run --rm --build oracle
+      - run: make week2-up week2-check
       - if: always()
         run: docker compose --env-file deploy/compose/images.env -f deploy/compose/compose.yaml down

@@ -66,6 +66,9 @@ services:
 
   envoy:
     image: ${ENVOY_IMAGE:?use the image lock}
+    # Bypass image init's chown of /dev/stdout, which Podman forbids.
+    entrypoint: [/usr/local/bin/envoy]
+    user: "65532:65532"
     command: [-c, /etc/envoy/envoy.yaml, --log-level, warning]
     ports:
       - "127.0.0.1:8080:8080"
