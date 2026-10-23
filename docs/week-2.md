@@ -130,5 +130,6 @@ Fixture adapter/contract digests are labeled identity markers, not signed releas
   HTTP/2/compression workload and restart behavior. No partner capture agent is built.
 
 The next independent product milestone is Week 3 contract IR/registry and labeled
-drift detection. These spikes do not implement synthesis, general schema import,
+drift detection; an [initial synthetic slice](week-3.md) is now implemented.
+The [M0 tracker](m0-closure.md) records the remaining closure evidence. These spikes do not implement synthesis, general schema import,
 approvals, release eligibility, canary/rollback or production delivery.

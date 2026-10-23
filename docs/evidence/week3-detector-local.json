@@ -1,0 +1,389 @@
+{
+  "schema_version": 1,
+  "profile": "synthetic-offline-week3",
+  "recorded_at": "2026-10-23T15:14:19.774372+00:00",
+  "platform": {
+    "system": "Darwin",
+    "architecture": "arm64"
+  },
+  "corpus_sha256": "fb511ced6aaf59a6a28b95866089933f6dbb23f8db155223f420eada9105713d",
+  "engine_sha256": "e869dd5f85351f839e43ef47e68ee698faacd2bd3f7e7af10e497c6acec8b44c",
+  "scenarios": 73,
+  "passed": 73,
+  "classes": {
+    "healthy": 22,
+    "operational": 6,
+    "semantic": 3,
+    "structural": 32,
+    "unsupported": 10
+  },
+  "eligible_for_release": false,
+  "semantic_limit": "Schema-valid unit/business errors require explicit invariant feedback.",
+  "results": [
+    {
+      "id": "string-valid",
+      "expected": "healthy",
+      "actual": "healthy"
+    },
+    {
+      "id": "string-wrong",
+      "expected": "structural",
+      "actual": "structural"
+    },
+    {
+      "id": "integer-valid",
+      "expected": "healthy",
+      "actual": "healthy"
+    },
+    {
+      "id": "integer-decimal-token",
+      "expected": "healthy",
+      "actual": "healthy"
+    },
+    {
+      "id": "integer-fraction",
+      "expected": "structural",
+      "actual": "structural"
+    },
+    {
+      "id": "number-integer",
+      "expected": "healthy",
+      "actual": "healthy"
+    },
+    {
+      "id": "boolean-valid",
+      "expected": "healthy",
+      "actual": "healthy"
+    },
+    {
+      "id": "boolean-string",
+      "expected": "structural",
+      "actual": "structural"
+    },
+    {
+      "id": "null-valid",
+      "expected": "healthy",
+      "actual": "healthy"
+    },
+    {
+      "id": "null-not-string",
+      "expected": "structural",
+      "actual": "structural"
+    },
+    {
+      "id": "required-missing",
+      "expected": "structural",
+      "actual": "structural"
+    },
+    {
+      "id": "optional-absent",
+      "expected": "healthy",
+      "actual": "healthy"
+    },
+    {
+      "id": "optional-null",
+      "expected": "structural",
+      "actual": "structural"
+    },
+    {
+      "id": "required-nullable",
+      "expected": "healthy",
+      "actual": "healthy"
+    },
+    {
+      "id": "nullable-still-required",
+      "expected": "structural",
+      "actual": "structural"
+    },
+    {
+      "id": "nested-missing",
+      "expected": "structural",
+      "actual": "structural"
+    },
+    {
+      "id": "move-is-only-hypothesis",
+      "expected": "structural",
+      "actual": "structural"
+    },
+    {
+      "id": "additional-open",
+      "expected": "healthy",
+      "actual": "healthy"
+    },
+    {
+      "id": "additional-closed",
+      "expected": "structural",
+      "actual": "structural"
+    },
+    {
+      "id": "additional-typed-good",
+      "expected": "healthy",
+      "actual": "healthy"
+    },
+    {
+      "id": "additional-typed-bad",
+      "expected": "structural",
+      "actual": "structural"
+    },
+    {
+      "id": "array-empty",
+      "expected": "healthy",
+      "actual": "healthy"
+    },
+    {
+      "id": "array-homogeneous",
+      "expected": "healthy",
+      "actual": "healthy"
+    },
+    {
+      "id": "array-heterogeneous",
+      "expected": "structural",
+      "actual": "structural"
+    },
+    {
+      "id": "array-null-item",
+      "expected": "structural",
+      "actual": "structural"
+    },
+    {
+      "id": "array-min",
+      "expected": "structural",
+      "actual": "structural"
+    },
+    {
+      "id": "array-max",
+      "expected": "structural",
+      "actual": "structural"
+    },
+    {
+      "id": "array-nested",
+      "expected": "structural",
+      "actual": "structural"
+    },
+    {
+      "id": "union-type-null",
+      "expected": "healthy",
+      "actual": "healthy"
+    },
+    {
+      "id": "union-type-reject",
+      "expected": "structural",
+      "actual": "structural"
+    },
+    {
+      "id": "any-of-good",
+      "expected": "healthy",
+      "actual": "healthy"
+    },
+    {
+      "id": "any-of-bad",
+      "expected": "structural",
+      "actual": "structural"
+    },
+    {
+      "id": "one-of-good",
+      "expected": "healthy",
+      "actual": "healthy"
+    },
+    {
+      "id": "one-of-ambiguous",
+      "expected": "structural",
+      "actual": "structural"
+    },
+    {
+      "id": "enum-valid",
+      "expected": "healthy",
+      "actual": "healthy"
+    },
+    {
+      "id": "enum-new-business-state",
+      "expected": "structural",
+      "actual": "structural"
+    },
+    {
+      "id": "const-null",
+      "expected": "healthy",
+      "actual": "healthy"
+    },
+    {
+      "id": "const-exact-large",
+      "expected": "structural",
+      "actual": "structural"
+    },
+    {
+      "id": "enum-numeric-equivalence",
+      "expected": "healthy",
+      "actual": "healthy"
+    },
+    {
+      "id": "minimum-exact",
+      "expected": "structural",
+      "actual": "structural"
+    },
+    {
+      "id": "maximum-exact",
+      "expected": "structural",
+      "actual": "structural"
+    },
+    {
+      "id": "exclusive-min",
+      "expected": "structural",
+      "actual": "structural"
+    },
+    {
+      "id": "exclusive-max",
+      "expected": "structural",
+      "actual": "structural"
+    },
+    {
+      "id": "negative-decimal",
+      "expected": "healthy",
+      "actual": "healthy"
+    },
+    {
+      "id": "numeric-keyword-on-string",
+      "expected": "healthy",
+      "actual": "healthy"
+    },
+    {
+      "id": "unicode-length",
+      "expected": "structural",
+      "actual": "structural"
+    },
+    {
+      "id": "string-max",
+      "expected": "structural",
+      "actual": "structural"
+    },
+    {
+      "id": "object-min",
+      "expected": "structural",
+      "actual": "structural"
+    },
+    {
+      "id": "object-max",
+      "expected": "structural",
+      "actual": "structural"
+    },
+    {
+      "id": "local-ref-valid",
+      "expected": "healthy",
+      "actual": "healthy"
+    },
+    {
+      "id": "local-ref-wrong",
+      "expected": "structural",
+      "actual": "structural"
+    },
+    {
+      "id": "boolean-false-schema",
+      "expected": "structural",
+      "actual": "structural"
+    },
+    {
+      "id": "authentication-401",
+      "expected": "operational",
+      "actual": "operational"
+    },
+    {
+      "id": "authentication-403",
+      "expected": "operational",
+      "actual": "operational"
+    },
+    {
+      "id": "rate-limit-429",
+      "expected": "operational",
+      "actual": "operational"
+    },
+    {
+      "id": "availability-500",
+      "expected": "operational",
+      "actual": "operational"
+    },
+    {
+      "id": "availability-503",
+      "expected": "operational",
+      "actual": "operational"
+    },
+    {
+      "id": "http-404",
+      "expected": "operational",
+      "actual": "operational"
+    },
+    {
+      "id": "business-decline",
+      "expected": "semantic",
+      "actual": "semantic"
+    },
+    {
+      "id": "protected-invariant",
+      "expected": "semantic",
+      "actual": "semantic"
+    },
+    {
+      "id": "truncated",
+      "expected": "unsupported",
+      "actual": "unsupported"
+    },
+    {
+      "id": "redacted",
+      "expected": "unsupported",
+      "actual": "unsupported"
+    },
+    {
+      "id": "dropped",
+      "expected": "unsupported",
+      "actual": "unsupported"
+    },
+    {
+      "id": "unknown-quality",
+      "expected": "unsupported",
+      "actual": "unsupported"
+    },
+    {
+      "id": "html-success",
+      "expected": "unsupported",
+      "actual": "unsupported"
+    },
+    {
+      "id": "compressed",
+      "expected": "unsupported",
+      "actual": "unsupported"
+    },
+    {
+      "id": "malformed",
+      "expected": "unsupported",
+      "actual": "unsupported"
+    },
+    {
+      "id": "duplicate-key",
+      "expected": "unsupported",
+      "actual": "unsupported"
+    },
+    {
+      "id": "two-documents",
+      "expected": "unsupported",
+      "actual": "unsupported"
+    },
+    {
+      "id": "partial-http-response",
+      "expected": "unsupported",
+      "actual": "unsupported"
+    },
+    {
+      "id": "sampled-structural",
+      "expected": "structural",
+      "actual": "structural"
+    },
+    {
+      "id": "shape-valid-unit-unknown",
+      "expected": "healthy",
+      "actual": "healthy"
+    },
+    {
+      "id": "shape-valid-unit-feedback",
+      "expected": "semantic",
+      "actual": "semantic"
+    }
+  ]
+}

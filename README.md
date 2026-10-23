@@ -1,13 +1,14 @@
 # Self-Healing API Mesh
 
-Week 1 foundation and Week 2 technical spikes for the [project plan](docs/implementation-plan.md):
+Week 1 foundation, Week 2 technical spikes and an initial Week 3 local registry slice for the [project plan](docs/implementation-plan.md):
 a Go simulator/collector, Rust/Wasm transforms behind Envoy ext_proc, independent
 oracle, signature fixtures, and an encrypted object-first/PostgreSQL acceptance lab.
 
 The collector still collects **redacted, non-authoritative observations**. Signature
 and durable-acceptance code is exercised by synthetic local tests, with no provider-facing
-acceptance endpoint. Drift detection, compilation and deployment remain later milestones.
-See [Week 2 status](docs/week-2.md) for evidence, limits and the open M0 gate.
+acceptance endpoint. The opt-in [Week 3 lab](docs/week-3.md) adds bounded contract
+import and synthetic drift diagnostics. Compilation and deployment remain later milestones.
+See [M0 closure tracking](docs/m0-closure.md) for external blockers and sign-off evidence.
 
 ## Run locally
 
@@ -107,6 +108,11 @@ limits. Measurements on the current smaller Podman VM do not satisfy the planned
 is authorized by this lab.
 
 ## Development
+
+Start the separate loopback-only Week 3 registry with `make week3-dev`; run its
+focused checks with `make week3-check`. The [walkthrough](docs/week-3.md#run-and-review)
+covers explicit contract import, route binding, incident inspection and mapping review.
+Its filesystem registry and synthetic labels do not qualify partner contracts or M0.
 
 - `make build`: build the Go binaries and Rust workspace.
 - `make check`: formatting, static checks, schemas/provenance, Go race tests, Rust tests, oracle.
