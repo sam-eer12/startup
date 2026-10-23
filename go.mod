@@ -1,8 +1,6 @@
 module github.com/sam-eer12/startup
 
-go 1.27.0
-
-toolchain go1.27.2
+go 1.27.3
 
 require (
 	github.com/go-jose/go-jose/v4 v4.1.6

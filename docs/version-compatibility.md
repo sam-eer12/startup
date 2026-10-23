@@ -1,13 +1,14 @@
 # Local compatibility record
 
-Pinned on 18 October 2026. Registry metadata confirms Linux AMD64 and ARM64
+Initial pins recorded on 18 October 2026; Go security update on 23 October 2026.
+Registry metadata confirms Linux AMD64 and ARM64
 manifests for every image below; that is availability evidence, not runtime
 qualification. Full image digests are committed in
 [images.env](../deploy/compose/images.env).
 
 | Component | Pin | Qualification |
 |---|---|---|
-| Go | 1.27.2; `golang:1.27.2-bookworm` | Native macOS ARM64 build, race tests and vet; Linux image available |
+| Go | 1.27.3; `golang:1.27.3-bookworm` | Required security floor for GO-2026-6809; native and CI checks described below |
 | Rust | 1.99.1; `rust:1.99.1-bookworm` | Native macOS ARM64 workspace/oracle; Linux image available |
 | Python | 3.14.8 | Schema/provenance tooling; exact package versions and hashes in `requirements-dev.txt` |
 | Envoy | `v1.36.13` | Podman Linux synthetic response transforms, chunking/framing and rejection smoke; production qualification pending |
@@ -28,6 +29,13 @@ advisory databases; scanners are development tools, not request-path dependencie
 CI action commits are pinned in the workflow. Runtime dependency compatibility,
 supported provider versions and image security eligibility must be reviewed again
 before any pilot deployment.
+
+Go 1.27.3 fixes the standard-library `crypto/x509` advisory
+[GO-2026-6809](https://pkg.go.dev/vuln/GO-2026-6809), which failed the 23 October
+`make scan` run with Go 1.27.2. The module's minimum Go version, CI setup and
+Linux image pin move together; the scan remains enforced. `go mod tidy` removes
+the redundant toolchain directive once the minimum itself is 1.27.3.
+Historical Week 2 scan evidence predates this advisory and is not current clearance.
 
 Sources used for pins and interfaces:
 [Go releases](https://go.dev/dl/),
