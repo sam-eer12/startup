@@ -12,7 +12,7 @@ See [M0 closure tracking](docs/m0-closure.md) for external blockers and sign-off
 
 ## Run locally
 
-Install Go **1.27.2**, Rust **1.99.1** with rustfmt/clippy, and Python **3.14.8**.
+Install Go **1.27.3**, Rust **1.99.1** with rustfmt/clippy, and Python **3.14.8**.
 Rust's toolchain file selects the pinned version when using rustup.
 
 ```sh

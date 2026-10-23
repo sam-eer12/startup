@@ -10,7 +10,7 @@ import urllib.request
 from pathlib import Path
 
 IMAGES = {
-    "GO_IMAGE": ("library/golang", "1.27.2-bookworm"),
+    "GO_IMAGE": ("library/golang", "1.27.3-bookworm"),
     "RUST_IMAGE": ("library/rust", "1.99.1-bookworm"),
     "POSTGRES_IMAGE": ("library/postgres", "18.6-bookworm"),
     "NATS_IMAGE": ("library/nats", "2.12.4-alpine"),
