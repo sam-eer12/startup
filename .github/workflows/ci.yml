@@ -25,6 +25,7 @@ jobs:
       - run: rustup toolchain install 1.99.1 --profile minimal --component clippy,rustfmt --target wasm32-unknown-unknown
       - run: make bootstrap
       - run: make check build
+      - run: make week3-smoke
       - run: cargo install cargo-audit --version 0.22.2 --locked
       - run: make scan
       - run: make compose-check up

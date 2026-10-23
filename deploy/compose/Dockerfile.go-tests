@@ -1,4 +1,11 @@
 ARG GO_IMAGE
+ARG RUST_IMAGE
+FROM ${RUST_IMAGE} AS contract-tool
+WORKDIR /src
+COPY Cargo.toml Cargo.lock rust-toolchain.toml ./
+COPY crates ./crates
+RUN cargo build --release --locked -p contract-ir
+
 FROM ${GO_IMAGE}
 WORKDIR /src
 COPY go.mod go.sum ./
@@ -9,4 +16,5 @@ COPY connectors ./connectors
 COPY fixtures ./fixtures
 COPY tests ./tests
 COPY scripts ./scripts
+COPY --from=contract-tool /src/target/release/contract-ir /src/target/debug/contract-ir
 CMD ["go", "test", "-race", "./...", "-v"]
