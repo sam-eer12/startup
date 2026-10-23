@@ -1,4 +1,8 @@
-//! Week 1 provenance boundary. Schema normalization and inference start in Week 3.
+//! Bounded contract normalization and local drift diagnostics. Observations never
+//! become authoritative contracts and this crate cannot authorize a repair.
+pub mod detect;
+pub mod schema;
+pub mod wire;
 use serde::{Deserialize, Serialize};
 
 /// Observed samples cannot be converted into a consumer binding implicitly.

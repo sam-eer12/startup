@@ -13,6 +13,8 @@ help:
 	@echo "up/down    Start/stop the Linux Compose environment (retains local volumes)"
 	@echo "smoke      Exercise the native service; use SMOKE_URL=http://127.0.0.1:8080 for Envoy"
 	@echo "scan       Scan dependencies against current vulnerability databases (network required)"
+	@echo "week3-dev  Run the synthetic loopback contract registry and detector lab"
+	@echo "week3-check/week3-smoke  Validate detector labels and the local CLI workflow"
 
 bootstrap:
 	python3 -m venv .venv
@@ -21,6 +23,7 @@ bootstrap:
 build:
 	$(GO) build -trimpath -o bin/devserver ./cmd/devserver
 	$(GO) build -trimpath -o bin/meshctl ./cmd/meshctl
+	$(GO) build -trimpath -o bin/control-lab ./cmd/control-lab
 	$(CARGO) build --workspace --locked
 
 dev:
@@ -43,7 +46,7 @@ schemas:
 	$(PYTHON) scripts/seed_fixtures.py --check
 	$(PYTHON) scripts/validate_schemas.py
 
-test: wasm
+test: wasm contract-tool
 	$(GO) test -race ./...
 	$(CARGO) test --workspace --locked
 
@@ -64,7 +67,25 @@ week2-check:
 oracle:
 	$(CARGO) run --locked -p verifier
 
-check: lint schemas test oracle
+check: lint schemas test oracle detector-eval
+
+.PHONY: contract-tool week3-dev week3-check week3-smoke detector-eval
+contract-tool:
+	$(CARGO) build --locked -p contract-ir
+
+week3-dev: contract-tool
+	$(GO) run ./cmd/control-lab
+
+week3-check: contract-tool
+	$(GO) test -race ./internal/control ./cmd/meshctl
+	$(CARGO) test --locked -p contract-ir
+	$(PYTHON) scripts/week3_eval.py
+
+detector-eval: contract-tool
+	$(PYTHON) scripts/week3_eval.py
+
+week3-smoke: build
+	$(PYTHON) scripts/week3_smoke.py
 
 SMOKE_URL ?= http://127.0.0.1:8081
 smoke:

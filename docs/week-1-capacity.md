@@ -1,5 +1,10 @@
 # Preliminary Weeks 1–6 sizing
 
+23 October update: the [M0 closure tracker](m0-closure.md) still awaits individual
+owner confirmations. [Week 3 technical work](week-3.md) has started on synthetic
+fixtures; the allocations below remain planning estimates, not accepted staffing,
+recorded engineer-days or a re-baselined delivery commitment.
+
 Planning estimates, not recorded work by a staffed four-person team. The technical
 lead and each real owner must confirm these estimates before starting the pilot
 clock. One engineer has about 3.5 effective engineer-days/week at 70% allocation;

@@ -34,6 +34,7 @@ services:
       dockerfile: deploy/compose/Dockerfile.go-tests
       args:
         GO_IMAGE: ${GO_IMAGE:?use the image lock}
+        RUST_IMAGE: ${RUST_IMAGE:?use the image lock}
     environment:
       MESH_TEST_DATABASE_URL: postgres://mesh_local:synthetic-local-only@postgres:5432/mesh_local?sslmode=disable
       GOPROXY: "off"
